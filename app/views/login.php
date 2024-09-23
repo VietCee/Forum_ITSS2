@@ -53,7 +53,7 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="text-center mt-3">
                     <a href="#" class="text-decoration-none">Forgot Password?</a><br>
-                    <a href="register.php" class="text-decoration-none">Create an Account!</a>
+                    <a href="index.php?paction=register" class="text-decoration-none">Create an Account!</a>
                 </div>
             </form>
         </div>

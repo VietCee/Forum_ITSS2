@@ -49,7 +49,7 @@ unset($_SESSION['form_data']);
                 </div>
                 <hr>
                 <div class="text-center mt-3">
-                    <a href="login.php" class="text-decoration-none">Already have an account? Login!</a>
+                    <a href="index.php?paction=login" class="text-decoration-none">Already have an account? Login!</a>
                 </div>
             </form>
         </div>
