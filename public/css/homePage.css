@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+.navbar {
+    background-color: #4267B2;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-left .logo {
+    height: 40px;
+}
+
+.navbar-center .search-bar {
+    width: 300px;
+    padding: 5px;
+}
+
+.navbar-right .nav-item {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+.sidebar, .right-sidebar {
+    width: 20%;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    height: 100vh;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.feed {
+    width: 60%;
+    margin: 0 15px;
+}
+
+.status-box {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.status-box textarea {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.status-box button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4267B2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.post {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-content {
+    margin-top: 15px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.post-actions button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #4267B2;
+}
+
+.right-sidebar .ad {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.contact-list p {
+    padding: 5px 0;
+    cursor: pointer;
+}
