@@ -4,8 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $error = $_SESSION['error'] ?? '';
 $form_data = $_SESSION['form_data'] ?? [];
-unset($_SESSION['error']);
-unset($_SESSION['form_data']);
+
 ?>
 
 <!DOCTYPE html>

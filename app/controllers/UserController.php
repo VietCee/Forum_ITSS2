@@ -2,8 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../config/database.php'; // Kết nối với CSDL
-require_once '../app/models/User.php'; // Model User
+require_once '../config/database.php';
+require_once '../app/models/User.php';
 
 class UserController
 {
@@ -11,9 +11,8 @@ class UserController
     {
         $error = $_SESSION['error'] ?? '';
         $form_data = $_SESSION['form_data'] ?? [];
-        unset($_SESSION['error'], $_SESSION['form_data']);
-
         require_once '../app/views/login.php';
+        unset($_SESSION['error'], $_SESSION['form_data']);
     }
 
     public function handleLogin()
@@ -50,9 +49,8 @@ class UserController
     {
         $error = $_SESSION['error'] ?? '';
         $form_data = $_SESSION['form_data'] ?? [];
-        unset($_SESSION['error'], $_SESSION['form_data']);
-
         require_once '../app/views/register.php';
+        unset($_SESSION['error'], $_SESSION['form_data']);
     }
 
     public function handleRegister()
