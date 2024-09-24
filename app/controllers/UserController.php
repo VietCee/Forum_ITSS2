@@ -35,7 +35,7 @@ class UserController
             $user = $userModel->getUserByEmail($email);
             if ($user && $passwords === $user['passwords']) {
                 $_SESSION['user'] = $user;
-                header("Location: dashboard.php");
+                header("Location: index.php?paction=homePage");
             } else {
                 $_SESSION['error'] = "Mật khẩu không chính xác";
                 $_SESSION['form_data'] = $_POST;
@@ -79,5 +79,10 @@ class UserController
             }
             exit();
         }
+    }
+
+    public function homePage()
+    {
+        require_once '../app/views/homepage.php';
     }
 }

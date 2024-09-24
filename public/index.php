@@ -19,6 +19,9 @@ switch ($page) {
     case 'handleRegister':
         $controller->handleRegister();
         break;
+    case 'login':
+        $controller->homePage();
+        break;
     default:
         $controller->login(); // Mặc định về login nếu không có route
         break;
