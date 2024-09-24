@@ -32,7 +32,7 @@ unset($_SESSION['form_data']);
                 <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
 
-            <<form action="index.php?paction=handleLogin" method="post">>
+            <form action="index.php?paction=handleLogin" method="post">
                 <div class="mb-3">
                     <input type="email" class="form-control" name="email" placeholder="Enter Email Address..." value="<?php echo htmlspecialchars($form_data['email'] ?? ''); ?>">
                 </div>
