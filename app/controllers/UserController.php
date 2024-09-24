@@ -31,9 +31,15 @@ class UserController
                 exit();
             }
 
-            // Kiểm tra trong CSDL
             $user = $userModel->getUserByEmail($email);
-            if ($user && $passwords === $user['passwords']) {
+            if (!$user) {
+                $_SESSION['error'] = "Email không tồn tại trong hệ thống";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: index.php?paction=login");
+                exit();
+            }
+
+            if ($user && password_verify($passwords, $user['passwords'])) {
                 $_SESSION['user'] = $user;
                 header("Location: index.php?paction=homePage");
             } else {
@@ -66,6 +72,20 @@ class UserController
 
             if (!empty($error)) {
                 $_SESSION['error'] = $error;
+                $_SESSION['form_data'] = $_POST;
+                header("Location: index.php?paction=register");
+                exit();
+            }
+
+            if ($userModel->getUserByEmail($email)) {
+                $_SESSION['error'] = "Email đã tồn tại trong hệ thống";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: index.php?paction=register");
+                exit();
+            }
+
+            if ($userModel->getUserByUsername($usernames)) {
+                $_SESSION['error'] = "Username đã tồn tại trong hệ thống";
                 $_SESSION['form_data'] = $_POST;
                 header("Location: index.php?paction=register");
                 exit();

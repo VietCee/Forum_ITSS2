@@ -48,6 +48,14 @@ class User
         return '';
     }
 
+    public function getUserByUsername($username)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE usernames = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
     public function insertUser($email, $username, $password)
     {
         $stmt = $this->conn->prepare("INSERT INTO user (email, usernames, passwords, date_created) VALUES (?, ?, ?, ?)");
