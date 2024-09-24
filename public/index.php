@@ -19,7 +19,7 @@ switch ($page) {
     case 'handleRegister':
         $controller->handleRegister();
         break;
-    case 'login':
+    case 'homePage':
         $controller->homePage();
         break;
     default:
