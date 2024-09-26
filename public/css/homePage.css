@@ -31,25 +31,16 @@ body {
 }
 
 h1 {
-    /* font-size: 72px; */
+    
     font-weight: 400;
     color: #ffffff;
     letter-spacing: 2px;
     text-align: center;
     font-weight: bold;
-    /* border-bottom: 2px solid #333;
-    padding-bottom: 10px; */
+
     max-width: 90%;
 }
 
-/* h1::after {
-    content: "";
-    display: block;
-    width: 50px;
-    height: 2px;
-    background-color: #333;
-    margin: 20px auto 0;
-} */
 
 .navbar-right .nav-item {
     margin-left: 20px;
@@ -165,4 +156,10 @@ h1 {
 .contact-list p {
     padding: 5px 0;
     cursor: pointer;
+}
+.success-message {
+    padding: 10px;
+    background-color: #e0f7e0; 
+    border: 1px solid #3cb371;
+    border-radius: 5px; 
 }

@@ -16,7 +16,7 @@ class UserController
     }
 
     public function handleLogin()
-{
+    {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $_POST['email'];
         $passwords = $_POST['passwords'];
@@ -49,7 +49,7 @@ class UserController
         }
         exit();
     }
-}
+    }
     public function register()
     {
         $error = $_SESSION['error'] ?? '';
