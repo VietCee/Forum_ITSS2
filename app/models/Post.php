@@ -27,7 +27,7 @@ class Post
         if (!$stmt->execute()) {
             die('Lỗi khi thực thi câu truy vấn: ' . $stmt->error);
         }
-        
+
         return true;
     }
 
@@ -54,7 +54,11 @@ class Post
 
     public function getPostById($id)
     {
-        $stmt = $this->conn->prepare("SELECT * FROM post WHERE id = ?");
+        $stmt = $this->conn->prepare(
+            "SELECT post.*, user.usernames FROM post 
+             JOIN user ON post.user_id = user.user_id 
+             WHERE post.id = ?"
+        );
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();

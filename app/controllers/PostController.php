@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once '../config/database.php';
 require_once '../app/models/User.php';
 require_once '../app/models/Post.php';
-
+require_once '../app/models/Comment.php';
 class PostController
 {
     public function addPost()
@@ -88,5 +88,34 @@ public function deletePost()
     }
 }
 
+
+public function postDetail()
+{
+    if (isset($_GET['id'])) {
+        $postModel = new Post();
+        $commentModel = new Comment();
+        $post = $postModel->getPostById($_GET['id']);
+        $comments = $commentModel->getCommentsByPostId($_GET['id']);
+
+        require_once '../app/views/postDetail.php';
+    } else {
+        echo 'Bài viết không tồn tại.';
+    }
+}
+
+public function addComment()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $commentModel = new Comment();
+        $post_id = $_POST['post_id'];
+        $user_id = $_SESSION['user']['user_id'];
+        $content = $_POST['content'];
+
+        $commentModel->createComment($post_id, $user_id, $content);
+
+        header("Location: index.php?paction=postDetail&id=" . $post_id);
+        exit();
+    }
+}
 
 }

@@ -50,9 +50,9 @@ if (isset($_SESSION['successMessage'])) {
 
             <form action="index.php?paction=addPost" method="POST" enctype="multipart/form-data">
                 <div class="status-box">
-                    <textarea name="content" placeholder="Bạn đang nghĩ gì?" required></textarea>
+                    <textarea name="content" placeholder="何を考えているのですか？" required></textarea>
                     <input type="file" name="image" accept="image/*">
-                    <input type="text" name="tag" placeholder="tags">
+                    <input type="text" name="tag" placeholder="タグ">
                     <button type="submit">Post</button>
                 </div>
             </form>
@@ -91,11 +91,12 @@ if (isset($_SESSION['successMessage'])) {
                                     <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 300px; height: auto;">
                                 </div>
                             <?php endif; ?>
+                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>">Xem chi tiết</a>
                         </div>
 
                         <div class="post-actions">
                             <button><i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)</button>
-                            <button><i class="fas fa-comment"></i> Comment</button>
+                            <button ><i class="fas fa-comment"></i> Comment</button>
                             <button><i class="fas fa-share"></i> Share</button>
                         </div>
                     </div>
