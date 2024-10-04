@@ -21,19 +21,26 @@ if (isset($_SESSION['successMessage'])) {
     <title>HomePage Form</title>
     <link rel="stylesheet" href="/Forum/public/css/homePage.css">
     <link rel="stylesheet" href="/Forum/public/css/post.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
 
-    <nav class="navbar">
-        <!-- <div class="navbar-left">
-            <img src="/public/img/446foxface2_100697.ico" alt="Facebook Logo" class="logo">
-        </div> -->
-        <div class="navbar-center">
-            <h1>SmallFood</h1>
+<nav class="navbar">
+    <div class="navbar-center">
+        <h1>SmallFood</h1>
+    </div>
+    <div class="navbar-right">
+        <div class="dropdown">
+                <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
+                    <li><a class="dropdown-item" href="profile.php">My Profile</a></li>
+                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Main Content -->
     <div class="container">
@@ -63,7 +70,7 @@ if (isset($_SESSION['successMessage'])) {
                     <div class="post">
                         <div class="post-header">
 
-                            <img src="/public/img/profile-pic.jpg" alt="Profile Picture" class="profile-pic">
+                            <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic">
 
                             <div class="post-info">
                                 <h3><?= $post['usernames'] ?></h3>
@@ -73,22 +80,22 @@ if (isset($_SESSION['successMessage'])) {
                             <?php if ($_SESSION['user']['user_id'] == $post['user_id']): ?>
                                 <div class="menu-options">
                                     <button class="menu-btn">⋮</button>
-                                    <div class="menu-content">
-                                        <a href="index.php?paction=editPost&id=<?= $post['id'] ?>">Edit</a>
-                                        <a href="index.php?paction=deletePost&id=<?= $post['id'] ?>"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">Delete</a>
-                                    </div>
+                                        <div class="menu-content">
+                                            <a href="index.php?paction=editPost&id=<?= $post['id'] ?>">Edit</a>
+                                            <a href="index.php?paction=deletePost&id=<?= $post['id'] ?>"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">Delete</a>
+                                        </div>
                                 </div>
                             <?php endif; ?>
                         </div>
 
                         <div class="post-content">
 
-                            <p><?= htmlspecialchars($post['content']) ?></p></br>
+                            <p><?= htmlspecialchars($post['content']) ?></p>
                             <p style="color: #1E90FF;"><strong>#</strong><?= htmlspecialchars($post['tag']) ?></p>
                             <?php if (!empty($post['image'])): ?>
                                 <div style="text-align: center;">
-                                    <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 300px; height: auto;">
+                                    <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 500px; height: auto;">
                                 </div>
                             <?php endif; ?>
                             <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>">Xem chi tiết</a>
@@ -120,6 +127,8 @@ if (isset($_SESSION['successMessage'])) {
             </div>
         </aside>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 <script>
