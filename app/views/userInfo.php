@@ -21,6 +21,7 @@ if (isset($_SESSION['successMessage'])) {
     <title>UserInfo Form</title>
     <link rel="stylesheet" href="/public/css/homePage.css">
     <link rel="stylesheet" href="/public/css/post.css">
+    <link rel="stylesheet" href="/public/css/userInfo.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -56,11 +57,13 @@ if (isset($_SESSION['successMessage'])) {
         <section class="feed">
 
             <form action="index.php?paction=addPost" method="POST" enctype="multipart/form-data">
-                <div class="status-box">
-                    <textarea name="content" placeholder="何を考えているのですか？" required></textarea>
-                    <input type="file" name="image" accept="image/*">
-                    <input type="text" name="tag" placeholder="タグ">
-                    <button type="submit">Post</button>
+                <div class="profile-header">
+                    <div class="profile-pic">T</div>
+                    <div class="profile-info">
+                        <h1 style="color: #000000;">ABC</h1>
+                        <p>16 posts</p>
+                    </div>
+                    <button class="edit-profile-btn" id="ep-Btn">Edit profile</button>
                 </div>
             </form>
 
@@ -128,6 +131,36 @@ if (isset($_SESSION['successMessage'])) {
         </aside>
     </div>
 
+    <!-- Modal chỉnh sửa profile -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="updateProfile.php" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" value="ABC">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="abc@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profilePic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profilePic" name="profilePic">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
@@ -148,6 +181,13 @@ if (isset($_SESSION['successMessage'])) {
             }
         }
     })
+    
+    document.getElementById('ep-Btn').addEventListener('click', function(event) {
+        event.preventDefault();
+        var editProfileModal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+        editProfileModal.show();
+    });
+
 </script>
 
 </html>
