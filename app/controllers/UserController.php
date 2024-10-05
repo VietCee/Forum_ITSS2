@@ -17,38 +17,38 @@ class UserController
 
     public function handleLogin()
     {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $email = $_POST['email'];
-        $passwords = $_POST['passwords'];
-        $userModel = new User();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $email = $_POST['email'];
+            $passwords = $_POST['passwords'];
+            $userModel = new User();
 
-        $error = $userModel->validateLogin($email, $passwords);
+            $error = $userModel->validateLogin($email, $passwords);
 
-        if (!empty($error)) {
-            $_SESSION['error'] = $error;
-            $_SESSION['form_data'] = $_POST;
-            header("Location: index.php?paction=login");
+            if (!empty($error)) {
+                $_SESSION['error'] = $error;
+                $_SESSION['form_data'] = $_POST;
+                header("Location: index.php?paction=login");
+                exit();
+            }
+
+            $user = $userModel->getUserByEmail($email);
+            if (!$user) {
+                $_SESSION['error'] = "Email không tồn tại trong hệ thống";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: index.php?paction=login");
+                exit();
+            }
+
+            if ($passwords === $user['passwords']) {
+                $_SESSION['user'] = $user;
+                header("Location: index.php?paction=homePage");
+            } else {
+                $_SESSION['error'] = "Mật khẩu không chính xác";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: index.php?paction=login");
+            }
             exit();
         }
-
-        $user = $userModel->getUserByEmail($email);
-        if (!$user) {
-            $_SESSION['error'] = "Email không tồn tại trong hệ thống";
-            $_SESSION['form_data'] = $_POST;
-            header("Location: index.php?paction=login");
-            exit();
-        }
-
-        if ($passwords === $user['passwords']) {
-            $_SESSION['user'] = $user;
-            header("Location: index.php?paction=homePage");
-        } else {
-            $_SESSION['error'] = "Mật khẩu không chính xác";
-            $_SESSION['form_data'] = $_POST;
-            header("Location: index.php?paction=login");
-        }
-        exit();
-    }
     }
     public function register()
     {

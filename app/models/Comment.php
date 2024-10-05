@@ -10,7 +10,6 @@ class Comment
         $this->conn = (new Database())->getConnection();
     }
 
-    // Tạo bình luận mới
     public function createComment($post_id, $user_id, $content)
     {
         $stmt = $this->conn->prepare(
@@ -31,7 +30,59 @@ class Comment
         return true;
     }
 
-    // Lấy tất cả bình luận của bài post theo post_id
+    public function updateComment($id, $content)
+    {
+        $stmt = $this->conn->prepare("UPDATE comments SET content = ? WHERE id = ?");
+
+        if ($stmt === false) {
+            die('Lỗi khi chuẩn bị câu truy vấn: ' . $this->conn->error);
+        }
+
+        $stmt->bind_param("si", $content, $id);
+
+        if (!$stmt->execute()) {
+            die('Lỗi khi thực thi câu truy vấn: ' . $stmt->error);
+        }
+
+        return true;
+    }
+
+    public function deleteComment($id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM comments WHERE id = ?");
+
+        if ($stmt === false) {
+            die('Lỗi khi chuẩn bị câu truy vấn: ' . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
+
+        if (!$stmt->execute()) {
+            die('Lỗi khi thực thi câu truy vấn: ' . $stmt->error);
+        }
+
+        return true;
+    }
+
+    public function getCommentById($id)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM comments WHERE id = ?");
+
+        if ($stmt === false) {
+            die('Lỗi khi chuẩn bị câu truy vấn: ' . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result === false) {
+            die('Lỗi khi thực thi câu truy vấn: ' . $this->conn->error);
+        }
+
+        return $result->fetch_assoc();
+    }
+
     public function getCommentsByPostId($post_id)
     {
         $stmt = $this->conn->prepare(
@@ -58,41 +109,5 @@ class Comment
         }
 
         return $comments;
-    }
-
-    // Cập nhật bình luận
-    public function updateComment($id, $content)
-    {
-        $stmt = $this->conn->prepare("UPDATE comments SET content = ? WHERE id = ?");
-
-        if ($stmt === false) {
-            die('Lỗi khi chuẩn bị câu truy vấn: ' . $this->conn->error);
-        }
-
-        $stmt->bind_param("si", $content, $id);
-
-        if (!$stmt->execute()) {
-            die('Lỗi khi thực thi câu truy vấn: ' . $stmt->error);
-        }
-
-        return true;
-    }
-
-    // Xóa bình luận
-    public function deleteComment($id)
-    {
-        $stmt = $this->conn->prepare("DELETE FROM comments WHERE id = ?");
-
-        if ($stmt === false) {
-            die('Lỗi khi chuẩn bị câu truy vấn: ' . $this->conn->error);
-        }
-
-        $stmt->bind_param("i", $id);
-
-        if (!$stmt->execute()) {
-            die('Lỗi khi thực thi câu truy vấn: ' . $stmt->error);
-        }
-
-        return true;
     }
 }

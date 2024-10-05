@@ -87,4 +87,40 @@ class Post
         $stmt->bind_param("i", $id);
         $stmt->execute();
     }
+
+    public function hasLiked($post_id, $user_id)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM post_likes WHERE post_id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $post_id, $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->num_rows > 0;
+    }
+    
+    // Thêm like
+    public function addLike($post_id, $user_id)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO post_likes (post_id, user_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $post_id, $user_id);
+        $stmt->execute();
+    
+        $stmt = $this->conn->prepare("UPDATE post SET like_count = like_count + 1 WHERE id = ?");
+        $stmt->bind_param("i", $post_id);
+        $stmt->execute();
+    }
+    
+    // Xóa like
+    public function removeLike($post_id, $user_id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM post_likes WHERE post_id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $post_id, $user_id);
+        $stmt->execute();
+    
+        $stmt = $this->conn->prepare("UPDATE post SET like_count = like_count - 1 WHERE id = ?");
+        $stmt->bind_param("i", $post_id);
+        $stmt->execute();
+    }
+    
+
+
 }

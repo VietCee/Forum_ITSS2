@@ -22,6 +22,8 @@ if (isset($_SESSION['successMessage'])) {
     <link rel="stylesheet" href="/Forum/public/css/homePage.css">
     <link rel="stylesheet" href="/Forum/public/css/post.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/Forum/public/js/homePage.js"></script>
 </head>
 
 <body>
@@ -95,8 +97,15 @@ if (isset($_SESSION['successMessage'])) {
                         </div>
 
                         <div class="post-actions">
-                            <button><i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)</button>
-                            <button ><i class="fas fa-comment"></i> Comment</button>
+                            <input type="hidden" class="post-id" value="<?= $post['id'] ?>">
+                            <button class="like-button" data-post-id="<?= $post['id'] ?>">
+                                <?php if ($postModel->hasLiked($post['id'], $_SESSION['user']['user_id'])): ?>
+                                    <i class="fas fa-thumbs-up"></i> Unlike (<?= $post['like_count'] ?>)
+                                <?php else: ?>
+                                    <i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)
+                                <?php endif; ?>
+                            </button>
+                            <button><i class="fas fa-comment"></i> Comment</button>
                             <button><i class="fas fa-share"></i> Share</button>
                         </div>
                     </div>
@@ -122,23 +131,5 @@ if (isset($_SESSION['successMessage'])) {
     </div>
 </body>
 
-<script>
-    document.addEventListener('click', function(event) {
-        var isClickInside = event.target.closest('.menu-options');
-
-        document.querySelectorAll('.menu-content').forEach(function(menu) {
-            if (!isClickInside || !menu.contains(event.target)) {
-                menu.style.display = 'none';
-            }
-        });
-
-        if (isClickInside) {
-            var menu = isClickInside.querySelector('.menu-content');
-            if (menu) {
-                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-            }
-        }
-    })
-</script>
 
 </html>
