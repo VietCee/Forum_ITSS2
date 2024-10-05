@@ -19,8 +19,8 @@ if (isset($_SESSION['successMessage'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage Form</title>
-    <link rel="stylesheet" href="/public/css/homePage.css">
-    <link rel="stylesheet" href="/public/css/post.css">
+    <link rel="stylesheet" href="/Forum/public/css/homePage.css">
+    <link rel="stylesheet" href="/Forum/public/css/post.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -35,8 +35,8 @@ if (isset($_SESSION['successMessage'])) {
         <div class="dropdown">
                 <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
-                    <li><a class="dropdown-item" href="profile.php">My Profile</a></li>
-                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                <li><a class="dropdown-item" href="index.php?paction=userInfo&id=<?= $_SESSION['user']['user_id'] ?>">My Profile</a></li>
+                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                 </ul>
         </div>
     </div>

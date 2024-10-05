@@ -87,4 +87,5 @@ class Post
         $stmt->bind_param("i", $id);
         $stmt->execute();
     }
+
 }

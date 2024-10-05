@@ -19,29 +19,29 @@ if (isset($_SESSION['successMessage'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UserInfo Form</title>
-    <link rel="stylesheet" href="/public/css/homePage.css">
-    <link rel="stylesheet" href="/public/css/post.css">
-    <link rel="stylesheet" href="/public/css/userInfo.css">
+    <link rel="stylesheet" href="/Forum/public/css/homePage.css">
+    <link rel="stylesheet" href="/Forum/public/css/post.css">
+    <link rel="stylesheet" href="/Forum/public/css/userInfo.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
 
-<nav class="navbar">
-    <div class="navbar-center">
-        <h1>SmallFood</h1>
-    </div>
-    <div class="navbar-right">
-        <div class="dropdown">
-                <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
-                    <li><a class="dropdown-item" href="profile.php">My Profile</a></li>
-                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-                </ul>
+    <nav class="navbar">
+        <div class="navbar-center">
+            <h1>SmallFood</h1>
         </div>
-    </div>
-</nav>
+        <div class="navbar-right">
+            <div class="dropdown">
+                    <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
+                        <li><a class="dropdown-item" href="#">My Profile</a></li>
+                        <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                    </ul>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     <div class="container">
@@ -55,13 +55,21 @@ if (isset($_SESSION['successMessage'])) {
         </aside>
 
         <section class="feed">
-
-            <form action="index.php?paction=addPost" method="POST" enctype="multipart/form-data">
+            <form action="index.php?paction=updateProfile&id=<?php echo $_SESSION['user']['user_id']; ?>" method="POST" enctype="multipart/form-data">
                 <div class="profile-header">
-                    <div class="profile-pic">T</div>
+                    <div class="profile-pic">
+                <!-- Hiển thị ảnh đại diện của người dùng -->
+                        <?php if (!empty($user['profile_picture'])): ?>
+                            <img src="uploads/<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" style="width: 60px; height: 70px; border-radius: 50%;">
+                        <?php else: ?>
+                            <div class="profile-placeholder">
+                                <span><?php echo strtoupper(substr($user['usernames'], 0, 1)); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                     <div class="profile-info">
-                        <h1 style="color: #000000;">ABC</h1>
-                        <p>16 posts</p>
+                        <h1 style="color: #000000;"><?= $user['usernames'] ?></h1>
+                        <p><?= $postCount ?> posts</p>
                     </div>
                     <button class="edit-profile-btn" id="ep-Btn">Edit profile</button>
                 </div>
@@ -133,36 +141,62 @@ if (isset($_SESSION['successMessage'])) {
 
     <!-- Modal chỉnh sửa profile -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="updateProfile.php" method="POST" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" value="ABC">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="abc@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label for="profilePic" class="form-label">Profile Picture</label>
-                            <input type="file" class="form-control" id="profilePic" name="profilePic">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </form>
-                </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?php if (!empty($_SESSION['errorMessage'])): ?>
+                    <div class="alert alert-danger">
+                        <?php echo $_SESSION['errorMessage']; ?>
+                    </div>
+                    <?php unset($_SESSION['errorMessage']); // Xóa thông báo sau khi hiển thị ?>
+                <?php endif; ?>
+
+                <form action="index.php?paction=updateProfile&id=<?php echo $_SESSION['user']['user_id']; ?>" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="ABC" 
+                            value="<?php echo $_SESSION['user']['input_username'] ?? $_SESSION['user']['usernames']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com" 
+                            value="<?php echo $_SESSION['user']['input_email'] ?? $_SESSION['user']['email']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="profilePic" class="form-label">Profile Picture</label>
+                        <input type="file" class="form-control" id="profilePic" name="profilePic">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        <?php if (!empty($_GET['modal']) && $_GET['modal'] === 'open'): ?>
+            var editProfileModal = new bootstrap.Modal(document.getElementById('editProfileModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            editProfileModal.show();
+        <?php endif; ?>
+    });
+</script>
 
 <script>
     document.addEventListener('click', function(event) {
