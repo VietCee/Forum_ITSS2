@@ -35,8 +35,8 @@ if (isset($_SESSION['successMessage'])) {
         <div class="dropdown">
                 <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
-                    <li><a class="dropdown-item" href="profile.php">My Profile</a></li>
-                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                <li><a class="dropdown-item" href="index.php?paction=userInfo&id=<?= $_SESSION['user']['user_id'] ?>">My Profile</a></li>
+                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                 </ul>
         </div>
     </div>
