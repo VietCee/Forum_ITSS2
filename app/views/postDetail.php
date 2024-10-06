@@ -1,102 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết bài viết</title>
+    <title>投稿の詳細</title>
     <link rel="stylesheet" href="/Forum/public/css/postDetail.css">
-
-    <style>
-
-        /* public/css/postDetail.css */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.post-detail {
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.comments-section {
-    background-color: #f1f1f1;
-    padding: 15px;
-    border-radius: 5px;
-}
-
-.comment {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-}
-
-button {
-    display: block;
-    margin-top: 10px;
-    padding: 8px 12px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-    </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="post-detail">
-        <p>Đăng bởi: <?= htmlspecialchars($post['usernames']) ?></p>
-        <p>Ngày đăng: <?= $post['date_created'] ?></p>
-            <h2><?= htmlspecialchars($post['content']) ?></h2>
-            <p style="color: #1E90FF;"><strong>#</strong><?= htmlspecialchars($post['tag']) ?></p>
-            <?php if (!empty($post['image'])): ?>
-                <img src="../public/uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 300px; height: auto;">
-            <?php endif; ?>
+    <h1>POST DETAIL</h1>
+        <div class="post-header">
+            <!-- Profile Image -->
+            <div class="profile-pic-container">
+                <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic">
+            </div>
 
+            <!-- User Info (Usernames and Date Created) -->
+            <div class="post-info">
+                <h3>投稿者: <?= htmlspecialchars($post['usernames']) ?></h3>
+                <p>投稿日: <?= $post['date_created'] ?></p>
+            </div>
+        </div>
+
+        <div class="post-detail">
+            <h2><?= htmlspecialchars($post['content']) ?></h2>
+            <p class="tag"><strong>#</strong><?= htmlspecialchars($post['tag']) ?></p>
+            <?php if (!empty($post['image'])): ?>
+                <img src="../public/uploads/<?= htmlspecialchars($post['image']) ?>" alt="投稿画像" class="post-image">
+            <?php endif; ?>
         </div>
 
         <div class="comments-section">
-    <h3>Bình luận</h3>
-    <?php if (!empty($comments)): ?>
-        <?php foreach ($comments as $comment): ?>
-            <div class="comment">
-                <p><strong><?= htmlspecialchars($comment['usernames']) ?>:</strong> <?= htmlspecialchars($comment['content']) ?></p>
-                <p><?= $comment['date_created'] ?></p>
+            <h3>コメント</h3>
+            <?php if (!empty($comments)): ?>
+                <?php foreach ($comments as $comment): ?>
+                    <div class="comment">
+                        <div class="comment-header">
+                            <strong><?= htmlspecialchars($comment['usernames']) ?></strong>
+                            <span class="comment-date"><?= $comment['date_created'] ?></span>
+                        </div>
+                        <p class="comment-content"><?= htmlspecialchars($comment['content']) ?></p>
+                        <?php if ($_SESSION['user']['user_id'] == $comment['user_id']): ?>
+                            <div class="comment-actions">
+                                <a href="index.php?paction=editComment&id=<?= $comment['id'] ?>" class="edit-comment">編集</a>
+                                <a href="index.php?paction=deleteComment&id=<?= $comment['id'] ?>" class="delete-comment" onclick="return confirm('このコメントを削除してもよろしいですか？')">削除</a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="no-comments">コメントがまだありません。</p>
+            <?php endif; ?>
 
-                <!-- Hiển thị nút Sửa và Xóa nếu là bình luận của người dùng hiện tại -->
-                <?php if ($_SESSION['user']['user_id'] == $comment['user_id']): ?>
-                    <a href="index.php?paction=editComment&id=<?= $comment['id'] ?>">Sửa</a>
-                    <a href="index.php?paction=deleteComment&id=<?= $comment['id'] ?>"
-                       onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?')">Xóa</a>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Chưa có bình luận nào.</p>
-    <?php endif; ?>
-
-    <!-- Form để thêm bình luận -->
-    <form action="index.php?paction=addComment" method="POST">
-        <textarea name="content" placeholder="Thêm bình luận" required></textarea>
-        <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-        <button type="submit">Bình luận</button>
-    </form>
-</div>
+            <form action="index.php?paction=addComment" method="POST" class="comment-form">
+                <textarea name="content" placeholder="コメントを追加" required></textarea>
+                <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+                <button type="submit" class="comment-button">コメント</button>
+            </form>
+        </div>
 
     </div>
 </body>
