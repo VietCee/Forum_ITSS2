@@ -42,7 +42,7 @@ if (isset($_SESSION['successMessage'])) {
         <aside class="sidebar">
             <ul>
                 <li><i class="fas fa-home"></i> Home</li>
-                <li><i class="fas fa-bookmark"></i> Saved</li>
+                <li><a href="index.php?paction=savedPosts"><i class="fas fa-bookmark"></i> Saved</a></li>
                 <li><i class="fas fa-user"></i> Users</li>
                 <li><i class="fas fa-magnifying-glass"></i> Search</li>
             </ul>
@@ -106,7 +106,13 @@ if (isset($_SESSION['successMessage'])) {
                                 <?php endif; ?>
                             </button>
                             <button><i class="fas fa-comment"></i> Comment</button>
-                            <button><i class="fas fa-share"></i> Share</button>
+                            <button class="save-button" data-post-id="<?= $post['id'] ?>">
+                                <?php if ($postModel->hasSaved($post['id'], $_SESSION['user']['user_id'])): ?>
+                                    <i class="fas fa-bookmark"></i> Unsave
+                                <?php else: ?>
+                                    <i class="fas fa-bookmark"></i> Save
+                                <?php endif; ?>
+                            </button>
                         </div>
                     </div>
                 <?php endforeach; ?>

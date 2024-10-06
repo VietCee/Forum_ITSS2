@@ -96,31 +96,67 @@ class Post
         $result = $stmt->get_result();
         return $result->num_rows > 0;
     }
-    
+
     // Thêm like
     public function addLike($post_id, $user_id)
     {
         $stmt = $this->conn->prepare("INSERT INTO post_likes (post_id, user_id) VALUES (?, ?)");
         $stmt->bind_param("ii", $post_id, $user_id);
         $stmt->execute();
-    
+
         $stmt = $this->conn->prepare("UPDATE post SET like_count = like_count + 1 WHERE id = ?");
         $stmt->bind_param("i", $post_id);
         $stmt->execute();
     }
-    
+
     // Xóa like
     public function removeLike($post_id, $user_id)
     {
         $stmt = $this->conn->prepare("DELETE FROM post_likes WHERE post_id = ? AND user_id = ?");
         $stmt->bind_param("ii", $post_id, $user_id);
         $stmt->execute();
-    
+
         $stmt = $this->conn->prepare("UPDATE post SET like_count = like_count - 1 WHERE id = ?");
         $stmt->bind_param("i", $post_id);
         $stmt->execute();
     }
-    
 
 
+    // Kiểm tra nếu user đã lưu bài viết
+    public function hasSaved($post_id, $user_id)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM saved_posts WHERE post_id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $post_id, $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->num_rows > 0;
+    }
+
+    // Thêm bài viết vào danh sách yêu thích
+    public function addSave($post_id, $user_id)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO saved_posts (post_id, user_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $post_id, $user_id);
+        $stmt->execute();
+    }
+
+    // Xóa bài viết khỏi danh sách yêu thích
+    public function removeSave($post_id, $user_id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM saved_posts WHERE post_id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $post_id, $user_id);
+        $stmt->execute();
+    }
+
+    public function getSavedPostsByUser($user_id)
+    {
+        $stmt = $this->conn->prepare("
+        SELECT post.* 
+        FROM post 
+        INNER JOIN saved_posts ON post.id = saved_posts.post_id 
+        WHERE saved_posts.user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 }

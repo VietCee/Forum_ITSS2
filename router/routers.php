@@ -49,10 +49,15 @@ switch ($page) {
     case 'updateComment':
         $commentController->updateComment();
         break;
-   
-        case 'toggleLike':
-            $postController->toggleLike();
-            break;
+    case 'toggleLike':
+        $postController->toggleLike();
+        break;
+    case 'toggleSave':
+        $postController->toggleSave();
+        break;
+    case 'savedPosts':
+        $postController->savedPosts();
+        break;
     default:
         $controller->login();
         break;

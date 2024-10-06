@@ -119,25 +119,51 @@ class PostController
     }
 
     public function toggleLike()
-{
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $post_id = $_POST['post_id'];
-        $user_id = $_SESSION['user']['user_id'];
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $post_id = $_POST['post_id'];
+            $user_id = $_SESSION['user']['user_id'];
 
-        $postModel = new Post();
+            $postModel = new Post();
 
-        if ($postModel->hasLiked($post_id, $user_id)) {
-            //unlike
-            $postModel->removeLike($post_id, $user_id);
-            echo json_encode(['status' => 'unliked']);
-        } else {
-            //like
-            $postModel->addLike($post_id, $user_id);
-            echo json_encode(['status' => 'liked']);
+            if ($postModel->hasLiked($post_id, $user_id)) {
+                //unlike
+                $postModel->removeLike($post_id, $user_id);
+                echo json_encode(['status' => 'unliked']);
+            } else {
+                //like
+                $postModel->addLike($post_id, $user_id);
+                echo json_encode(['status' => 'liked']);
+            }
         }
     }
-}
- 
 
-}
 
+    public function toggleSave()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $post_id = $_POST['post_id'];
+            $user_id = $_SESSION['user']['user_id'];
+
+            $postModel = new Post();
+
+            if ($postModel->hasSaved($post_id, $user_id)) {
+                //bỏ lưu
+                $postModel->removeSave($post_id, $user_id);
+            } else {
+                //lưu
+                $postModel->addSave($post_id, $user_id);
+            }
+
+            echo json_encode(['status' => 'success']);
+        }
+    }
+    public function savedPosts()
+    {
+        $user_id = $_SESSION['user']['user_id'];
+        $postModel = new Post();
+        $savedPosts = $postModel->getSavedPostsByUser($user_id);
+
+        require_once '../app/views/savedPosts.php'; // Điều chỉnh giống với postDetail
+    }
+}
