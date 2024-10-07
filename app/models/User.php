@@ -1,5 +1,5 @@
 <?php
-require_once '../config/database.php';
+require_once 'E:/xampp/htdocs/Forum/config/database.php';
 
 class User
 {
@@ -63,4 +63,49 @@ class User
         $stmt->bind_param("ssss", $email, $username, $password, $date_created);
         return $stmt->execute();
     }
+
+    public function getAllUsers()
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE admin = 0"); // Chỉ lấy những người không phải admin
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+
+    // Lấy danh sách người dùng với id, usernames và email
+    public function getUsers()
+    {
+        $stmt = $this->conn->prepare("SELECT user_id, usernames, email FROM user"); // Sửa 'id' thành 'user_id'
+        
+        if ($stmt === false) {
+            // In ra thông báo lỗi
+            echo "Lỗi SQL: " . $this->conn->error;
+            return [];
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+
+        return $users;
+    }
+
+    
+    public function deleteUser($id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM user WHERE user_id = ?"); // Đảm bảo tên cột đúng
+        $stmt->bind_param("i", $id);
+        
+        if ($stmt->execute()) {
+            return true; // Trả về true nếu xóa thành công
+        } else {
+            return false; // Trả về false nếu có lỗi
+        }
+    }
+   
+
 }
