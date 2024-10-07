@@ -70,5 +70,49 @@ class User
         $stmt->bind_param("i", $id); // "i" là loại dữ liệu cho số nguyên (int)
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
-    }  
+    }
+
+
+    public function getNonAdminUsers()
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE admin = 0");
+
+        if (!$stmt->execute()) {
+            die('Lỗi khi thực thi câu truy vấn: ' . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+
+        return $users;
+    }
+
+
+    public function deleteUserById($userId)
+    {
+        $deleteLikesQuery = "DELETE FROM post_likes WHERE user_id = ?";
+        $stmt = $this->conn->prepare($deleteLikesQuery);
+        $stmt->bind_param("i", $userId);
+
+        if (!$stmt->execute()) {
+            die('Lỗi khi thực thi câu truy vấn xóa likes: ' . $stmt->error);
+        }
+
+        $deleteUserQuery = "DELETE FROM user WHERE user_id = ?";
+        $stmt = $this->conn->prepare($deleteUserQuery);
+        $stmt->bind_param("i", $userId);
+
+        if (!$stmt->execute()) {
+            die('Lỗi khi thực thi câu truy vấn xóa người dùng: ' . $stmt->error);
+        }
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

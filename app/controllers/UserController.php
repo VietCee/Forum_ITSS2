@@ -104,4 +104,23 @@ class UserController
     {
         require_once '../app/views/homepage.php';
     }
+
+
+    public function manageAccounts()
+{
+    $userModel = new User();
+    $users = $userModel->getNonAdminUsers();
+    require_once '../app/views/manageAccounts.php'; // Thay đổi đường dẫn theo cấu trúc của bạn
+}
+
+public function deleteUser()
+{
+    if (isset($_POST['user_id'])) {
+        $userModel = new User();
+        $userModel->deleteUserById($_POST['user_id']);
+        header('Location: index.php?paction=manageAccounts'); // Chuyển hướng lại trang quản lý
+        exit();
+    }
+}
+
 }

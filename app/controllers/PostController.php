@@ -45,15 +45,17 @@ class PostController
         if (isset($_GET['id'])) {
             $postModel = new Post();
             $post = $postModel->getPostById($_GET['id']);
-
-
-            if ($post['user_id'] == $_SESSION['user']['user_id']) { // kiểm tra xem bài viết có thuộc user hiện tại đăng không
+    
+            if ($post['user_id'] == $_SESSION['user']['user_id']) {
                 require_once '../app/views/editPost.php';
             } else {
-                echo 'Bạn không có quyền chỉnh sửa bài viết này.';
+                $_SESSION['error_message'] = 'Bạn không có quyền chỉnh sửa bài viết này.';
+                header("Location: index.php?paction=homePage");
+                exit();
             }
         }
     }
+    
 
 
     public function updatePost()
@@ -77,8 +79,10 @@ class PostController
         if (isset($_GET['id'])) {
             $postModel = new Post();
             $post = $postModel->getPostById($_GET['id']);
-
-            if ($post['user_id'] == $_SESSION['user']['user_id']) { // kiểm tra xem bài viết có thuộc user hiện tại đăng không
+    
+            $isAdmin = $_SESSION['user']['admin'] == 1;
+    
+            if ($isAdmin || $post['user_id'] == $_SESSION['user']['user_id']) { 
                 $postModel->deletePost($_GET['id']);
                 header("Location: index.php?paction=homePage");
                 exit();
@@ -166,7 +170,7 @@ class PostController
 
         require_once '../app/views/savedPosts.php'; // Điều chỉnh giống với postDetail
     }
-
-
+    
+   
 
 }

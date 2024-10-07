@@ -3,11 +3,20 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Kiểm tra và hiển thị thông báo thành công
 if (isset($_SESSION['successMessage'])) {
     echo '<script>
             alert("' . htmlspecialchars($_SESSION['successMessage']) . '");
           </script>';
     unset($_SESSION['successMessage']);
+}
+
+// Kiểm tra và hiển thị thông báo lỗi
+if (isset($_SESSION['error_message'])) {
+    echo '<script>
+            alert("' . htmlspecialchars($_SESSION['error_message']) . '");
+          </script>';
+    unset($_SESSION['error_message']);
 }
 ?>
 
@@ -50,13 +59,14 @@ if (isset($_SESSION['successMessage'])) {
             <ul>
                 <li><a href="index.php?paction=homePage"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="index.php?paction=savedPosts"><i class="fas fa-bookmark"></i> Saved</a></li>
-                <li><i class="fas fa-user"></i> Users</a></li>
-                <li><i class="fas fa-magnifying-glass"></i> Search</li>
+                <?php if ($_SESSION['user']['admin'] == 1): ?>
+                    <li><a href="index.php?paction=manageAccounts"><i class="fas fa-user-shield"></i> Manage Users</a></li>
+                <?php endif; ?>
+                <li><i class="fas fa-magnifying-glass"></i> Search</a></li>
             </ul>
         </aside>
 
         <section class="feed">
-
             <form action="index.php?paction=addPost" method="POST" enctype="multipart/form-data">
                 <div class="status-box">
                     <textarea name="content" placeholder="何を考えているのですか？" required></textarea>
@@ -83,7 +93,7 @@ if (isset($_SESSION['successMessage'])) {
                                 <p><?= $post['date_created'] ?></p>
                             </div>
 
-                            <?php if ($_SESSION['user']['user_id'] == $post['user_id']): ?>
+                            <?php if ($_SESSION['user']['user_id'] == $post['user_id'] || $_SESSION['user']['admin'] == 1): ?>
                                 <div class="menu-options">
                                     <button class="menu-btn">⋮</button>
                                     <div class="menu-content">

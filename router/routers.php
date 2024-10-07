@@ -69,7 +69,12 @@ switch ($page) {
     case 'updateProfile':
         $userInfoController->updateProfile();
         break;
-
+    case 'manageAccounts':
+        $controller->manageAccounts();
+        break;
+    case 'deleteUser':
+        $controller->deleteUser();
+        break;
 
     default:
         $controller->login();
