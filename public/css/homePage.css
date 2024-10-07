@@ -195,6 +195,14 @@ body {
   font-size: 14px;
 }
 
+.post-actions a {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #4267b2;
+  font-size: 14px;
+}
+
 .right-sidebar {
   width: 20%;
   background-color: white;

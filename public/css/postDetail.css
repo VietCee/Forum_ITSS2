@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9); /* Màu nền trong suốt */
@@ -18,11 +18,30 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.back-arrow {
+  position: absolute;
+  left: 0;
+  font-size: 24px;
+  color: #333;
+  text-decoration: none;
+  padding: 10px;
+  transition: color 0.3s ease;
+}
+
+.back-arrow:hover {
+  color: #007bff;
+}
 /* Flexbox để chia ảnh và thông tin thành 2 cột */
 .post-header {
   display: flex;
   align-items: center;
-  padding: 20px;
 }
 
 /* Profile picture nằm trong cột đầu tiên */
@@ -31,8 +50,8 @@ body {
 }
 
 .profile-pic {
-  height: 60px;
-  width: 60px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -46,44 +65,39 @@ body {
 
 .post-info h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 }
 
 .post-info p {
   margin: 5px 0;
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* Chi tiết bài đăng */
-.post-detail {
-  text-align: center;
-  padding: 30px;
-}
 h1 {
   text-align: center;
   font-size: 28px;
   font-weight: 600;
-  color: #1e90ff;
 }
 
 .post-detail h2 {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 500;
   margin-bottom: 20px;
   color: #333;
 }
 
 .post-detail .tag {
-  font-size: 16px;
-  color: #1e90ff;
+  font-size: 14px;
+  color: #6699ff;
   font-weight: bold;
 }
 
 /* Hình ảnh bài đăng */
 .post-image {
-  width: 100%;
+  width: 80%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -104,7 +118,7 @@ h1 {
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
-  border-bottom: 2px solid #1e90ff;
+  border-bottom: 2px solid #6699ff;
   padding-bottom: 10px;
 }
 
@@ -125,21 +139,19 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .comment-header strong {
-  font-size: 18px;
-  color: #333;
+  font-size: 16px;
 }
 
 .comment-date {
-  font-size: 14px;
+  font-size: 12px;
   color: #999;
 }
 
 .comment-content {
-  font-size: 16px;
+  font-size: 14px;
   color: #555;
   margin-bottom: 15px;
   line-height: 1.5;
@@ -154,7 +166,7 @@ h1 {
 .edit-comment,
 .delete-comment {
   font-size: 14px;
-  color: #1e90ff;
+  color: #6699ff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -198,17 +210,13 @@ h1 {
 }
 
 .comment-button {
-  background-color: #1e90ff;
+  padding: 10px;
+  background-color: #6699ff;
   color: white;
-  padding: 12px 20px;
+  font-size: 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
   align-self: flex-end;
-}
-
-.comment-button:hover {
-  background-color: #1c86ee;
 }

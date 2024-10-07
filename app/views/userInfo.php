@@ -22,7 +22,7 @@ if (isset($_SESSION['successMessage'])) {
     <link rel="stylesheet" href="/Forum/public/css/homePage.css">
     <link rel="stylesheet" href="/Forum/public/css/post.css">
     <link rel="stylesheet" href="/Forum/public/css/userInfo.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
@@ -89,11 +89,11 @@ if (isset($_SESSION['successMessage'])) {
                             </div>
 
                             <?php if ($_SESSION['user']['user_id'] == $post['user_id']): ?>
-                                <div class="menu-options">
-                                    <button class="menu-btn">⋮</button>
-                                        <div class="menu-content">
-                                            <a href="index.php?paction=editPost&id=<?= $post['id'] ?>">Edit</a>
-                                            <a href="index.php?paction=deletePost&id=<?= $post['id'] ?>"
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="index.php?paction=editPost&id=<?= $post['id'] ?>">Edit</a>
+                                            <a class="dropdown-item" href="index.php?paction=deletePost&id=<?= $post['id'] ?>"
                                                 onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">Delete</a>
                                         </div>
                                 </div>
@@ -109,12 +109,13 @@ if (isset($_SESSION['successMessage'])) {
                                     <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 500px; height: auto;">
                                 </div>
                             <?php endif; ?>
-                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>">Xem chi tiết</a>
                         </div>
 
                         <div class="post-actions">
                             <button><i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)</button>
-                            <button ><i class="fas fa-comment"></i> Comment</button>
+                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>" class="btn">
+                                <i class="fas fa-comment"></i> Comment
+                            </a>
                             <button><i class="fas fa-share"></i> Share</button>
                         </div>
                     </div>
@@ -141,40 +142,40 @@ if (isset($_SESSION['successMessage'])) {
 
     <!-- Modal chỉnh sửa profile -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <?php if (!empty($_SESSION['errorMessage'])): ?>
-                    <div class="alert alert-danger">
-                        <?php echo $_SESSION['errorMessage']; ?>
-                    </div>
-                    <?php unset($_SESSION['errorMessage']); // Xóa thông báo sau khi hiển thị ?>
-                <?php endif; ?>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php if (!empty($_SESSION['errorMessage'])): ?>
+                        <div class="alert alert-danger">
+                            <?php echo $_SESSION['errorMessage']; ?>
+                        </div>
+                        <?php unset($_SESSION['errorMessage']); // Xóa thông báo sau khi hiển thị ?>
+                    <?php endif; ?>
 
-                <form action="index.php?paction=updateProfile&id=<?php echo $_SESSION['user']['user_id']; ?>" method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="ABC" 
-                            value="<?php echo $_SESSION['user']['input_username'] ?? $_SESSION['user']['usernames']; ?>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com" 
-                            value="<?php echo $_SESSION['user']['input_email'] ?? $_SESSION['user']['email']; ?>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="profilePic" class="form-label">Profile Picture</label>
-                        <input type="file" class="form-control" id="profilePic" name="profilePic">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </form>
+                    <form action="index.php?paction=updateProfile&id=<?php echo $_SESSION['user']['user_id']; ?>" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="ABC" 
+                                value="<?php echo $_SESSION['user']['input_username'] ?? $_SESSION['user']['usernames']; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com" 
+                                value="<?php echo $_SESSION['user']['input_email'] ?? $_SESSION['user']['email']; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profilePic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profilePic" name="profilePic">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 </div>
 
 </div>
@@ -182,9 +183,15 @@ if (isset($_SESSION['successMessage'])) {
 </div>
 
 </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/Forum/public/js/homePage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown();
+    });
+    </script>
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function() {

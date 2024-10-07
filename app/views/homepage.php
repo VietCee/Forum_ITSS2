@@ -23,6 +23,8 @@ if (isset($_SESSION['successMessage'])) {
     <link rel="stylesheet" href="/Forum/public/css/post.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+   
 </head>
 
 <body>
@@ -98,12 +100,20 @@ if (isset($_SESSION['successMessage'])) {
                                     <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 500px; height: auto;">
                                 </div>
                             <?php endif; ?>
-                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>">Xem chi tiết</a>
                         </div>
 
                         <div class="post-actions">
-                            <button><i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)</button>
-                            <button ><i class="fas fa-comment"></i> Comment</button>
+                            <input type="hidden" class="post-id" value="<?= $post['id'] ?>">
+                            <button class="like-button" data-post-id="<?= $post['id'] ?>">
+                                <?php if ($postModel->hasLiked($post['id'], $_SESSION['user']['user_id'])): ?>
+                                    <i class="fas fa-thumbs-up"></i> Unlike (<?= $post['like_count'] ?>)
+                                <?php else: ?>
+                                    <i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)
+                                <?php endif; ?>
+                            </button>
+                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>" class="btn">
+                                <i class="fas fa-comment"></i> Comment
+                            </a>
                             <button><i class="fas fa-share"></i> Share</button>
                         </div>
                     </div>
@@ -128,11 +138,16 @@ if (isset($_SESSION['successMessage'])) {
         </aside>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/Forum/public/js/homePage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown();
+    });
+    </script>
 </body>
 
-<script>
-</script>
 
 </html>
