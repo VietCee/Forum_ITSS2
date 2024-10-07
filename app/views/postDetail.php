@@ -43,18 +43,26 @@
             <h3>コメント</h3>
             <?php if (!empty($comments)): ?>
                 <?php foreach ($comments as $comment): ?>
-                    <div class="comment">
+                    <div class="comment" id="comment-<?= $comment['id'] ?>">
                         <div class="comment-header">
                             <strong>コメント者: <?= htmlspecialchars($comment['usernames']) ?></strong>
-                            <span class="comment-date"><?= $comment['date_created'] ?></span>
+                            <span  class="comment-date"><?= $comment['date_created'] ?></span>
                         </div>
-                        <p class="comment-content">内容: <?= htmlspecialchars($comment['content']) ?></p>
+                        <p id="comment-content-<?= $comment['id'] ?>" class="comment-content">内容: <?= htmlspecialchars($comment['content']) ?></p>
                         <?php if ($_SESSION['user']['user_id'] == $comment['user_id']): ?>
                             <div class="comment-actions">
-                                <a href="index.php?paction=editComment&id=<?= $comment['id'] ?>" class="edit-comment">編集</a>
-                                <a href="index.php?paction=deleteComment&id=<?= $comment['id'] ?>" class="delete-comment" onclick="return confirm('このコメントを削除してもよろしいですか？')">削除</a>
+                                <a class="edit-comment" href="javascript:void(0);" onclick="editComment(<?= $comment['id'] ?>)">編集</a>
+                                <a class="delete-comment"  href="index.php?paction=deleteComment&comment_id=<?= $comment['id'] ?>&post_id=<?= $post['id'] ?>"
+                                    onclick="return confirm('このコメントを削除してもよろしいですか？')">削除</a>
                             </div>
                         <?php endif; ?>
+                        <form id="edit-form-<?= $comment['id'] ?>" class="edit-form" style="display:none;" method="POST" onsubmit="return saveComment(<?= $comment['id'] ?>, <?= $post['id'] ?>)">
+                            <textarea id="edit-content-<?= $comment['id'] ?>"><?= htmlspecialchars($comment['content']) ?></textarea>
+                            <div class="button-group">
+                                <button type="submit">Update</button>
+                                <button type="button" onclick="cancelEdit(<?= $comment['id'] ?>)">Cancel</button>
+                            </div>
+                        </form>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -70,5 +78,6 @@
 
     </div>
 </body>
+<script src="/Forum/public/js/comment.js"></script>
 
 </html>

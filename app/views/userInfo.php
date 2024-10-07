@@ -34,10 +34,13 @@ if (isset($_SESSION['successMessage'])) {
         </div>
         <div class="navbar-right">
             <div class="dropdown">
-                <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
+        
+                <img src="uploads/<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
+
+
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
                     <li><a class="dropdown-item" href="#">My Profile</a></li>
-                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                    <li><a class="dropdown-item" href="index.php?login">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -81,7 +84,14 @@ if (isset($_SESSION['successMessage'])) {
                     <div class="post">
                         <div class="post-header">
 
-                            <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic">
+                            <!-- <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic"> -->
+                            <?php if (!empty($user['profile_picture'])): ?>
+                                <img src="uploads/<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
+                            <?php else: ?>
+                                <div class="profile-placeholder">
+                                    <span><?php echo strtoupper(substr($user['usernames'], 0, 1)); ?></span>
+                                </div>
+                            <?php endif; ?>
 
                             <div class="post-info">
                                 <h3><?= $post['usernames'] ?></h3>

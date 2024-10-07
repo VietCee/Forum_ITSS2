@@ -2,7 +2,9 @@
 require_once '../app/controllers/UserController.php';
 require_once '../app/controllers/PostController.php';
 require_once '../app/controllers/CommentController.php';
-require_once '../app/controllers/UserInfoController.php'; 
+require_once '../app/controllers/UserInfoController.php';
+
+
 
 $page = isset($_GET['paction']) ? $_GET['paction'] : 'login';
 
@@ -10,6 +12,7 @@ $controller = new UserController();
 $postController = new PostController();
 $commentController = new CommentController();
 $userInfoController = new UserInfoController();
+
 
 switch ($page) {
     case 'login':
@@ -60,12 +63,14 @@ switch ($page) {
     case 'savedPosts':
         $postController->savedPosts();
         break;
-    case 'userInfo': // Xử lý yêu cầu đến userInfo
+    case 'userInfo':
         $userInfoController->showUserInfo();
         break;
     case 'updateProfile':
         $userInfoController->updateProfile();
         break;
+
+
     default:
         $controller->login();
         break;

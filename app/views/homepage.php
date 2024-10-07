@@ -38,7 +38,7 @@ if (isset($_SESSION['successMessage'])) {
                 <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
                     <li><a class="dropdown-item" href="index.php?paction=userInfo&id=<?= $_SESSION['user']['user_id'] ?>">My Profile</a></li>
-                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                    <li><a class="dropdown-item" href="index.php?login">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -50,7 +50,7 @@ if (isset($_SESSION['successMessage'])) {
             <ul>
                 <li><a href="index.php?paction=homePage"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="index.php?paction=savedPosts"><i class="fas fa-bookmark"></i> Saved</a></li>
-                <li><i class="fas fa-user"></i> Users</li>
+                <li><i class="fas fa-user"></i> Users</a></li>
                 <li><i class="fas fa-magnifying-glass"></i> Search</li>
             </ul>
         </aside>
@@ -73,6 +73,10 @@ if (isset($_SESSION['successMessage'])) {
                         <div class="post-header">
 
                             <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic">
+
+                            <!-- <img src="uploads/<?= htmlspecialchars($post['profile_picture']) ?>" alt="Profile Picture" class="profile-pic"> -->
+
+
 
                             <div class="post-info">
                                 <h3><?= $post['usernames'] ?></h3>
@@ -145,7 +149,10 @@ if (isset($_SESSION['successMessage'])) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
 </body>
+
 
 
 </html>
