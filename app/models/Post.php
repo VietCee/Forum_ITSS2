@@ -159,4 +159,23 @@ class Post
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function searchPostsByTag($tag) {
+        global $conn; // Kết nối database của bạn
+
+        // Sử dụng prepared statement để bảo vệ khỏi SQL injection
+        $stmt = $conn->prepare("SELECT * FROM posts WHERE tag LIKE ?"); // Giả sử bảng của bạn là 'posts'
+        $searchTerm = "%$tag%"; // Tạo điều kiện tìm kiếm
+        $stmt->bind_param("s", $searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Lưu kết quả vào mảng
+        $posts = [];
+        while ($row = $result->fetch_assoc()) {
+            $posts[] = $row;
+        }
+
+        return $posts;
+    }
 }

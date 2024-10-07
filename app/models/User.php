@@ -63,4 +63,12 @@ class User
         $stmt->bind_param("ssss", $email, $username, $password, $date_created);
         return $stmt->execute();
     }
+
+    public function getUserById($id)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE user_id = ?");
+        $stmt->bind_param("i", $id); // "i" là loại dữ liệu cho số nguyên (int)
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
 }

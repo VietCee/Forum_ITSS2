@@ -166,4 +166,7 @@ class PostController
 
         require_once '../app/views/savedPosts.php'; // Điều chỉnh giống với postDetail
     }
+
+
+
 }
