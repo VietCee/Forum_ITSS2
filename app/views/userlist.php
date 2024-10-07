@@ -30,20 +30,6 @@ $users = $userModel->getAllUsers();
     <link rel="stylesheet" href="/Forum/public/css/userlist.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .menu-content {
-            display: none; /* Ẩn menu theo mặc định */
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ddd;
-            padding: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            z-index: 100; /* Để menu hiện lên trên các phần tử khác */
-        }
-        .user-item {
-            position: relative; /* Thêm thuộc tính để menu hiện ra đúng vị trí */
-        }
-    </style>
 </head>
 
 <body>
@@ -83,26 +69,26 @@ $users = $userModel->getAllUsers();
 
             
             <div class="user-list">
-            <?php
-            // Duyệt qua danh sách người dùng và hiển thị
-            foreach ($users as $user) {
-                echo '
-                <div class="user-item">
-                    <div class="avatar">' . strtoupper($user['usernames'][0]) . '</div>
-                    <div class="user-info">
-                        <h3>' . htmlspecialchars($user['usernames']) . '</h3>
-                        <p>' . htmlspecialchars($user['email']) . '</p>
-                        <div class="meta-info">
-                            <span>#' . htmlspecialchars($user['user_id']) . '</span>
-                            <span class="dot"></span>
-                            <span>' . htmlspecialchars($user['date_created']) . '</span>
+                <?php
+                // Duyệt qua danh sách người dùng và hiển thị
+                foreach ($users as $user) {
+                    echo '
+                    <div class="user-item">
+                        <div class="avatar">' . strtoupper($user['usernames'][0]) . '</div>
+                        <div class="user-info">
+                            <h3>' . htmlspecialchars($user['usernames']) . '</h3>
+                            <p>' . htmlspecialchars($user['email']) . '</p>
+                            <div class="meta-info">
+                                <span>#' . htmlspecialchars($user['user_id']) . '</span>
+                                <span class="dot"></span>
+                                <span>' . htmlspecialchars($user['date_created']) . '</span>
+                            </div>
                         </div>
-                    </div>
-                    <button class="menu-btn" onclick="confirmDelete(' . $user['user_id'] . ')"> &#8942; </button>
-                </div>';
-            }
-            ?>
-        </div>
+                        <button class="delete-btn" onclick="confirmDelete(' . $user['user_id'] . ')"><i class="fa-solid fa-trash"></i></button>
+                    </div>';
+                }
+                ?>
+            </div>
 
 
         </div>

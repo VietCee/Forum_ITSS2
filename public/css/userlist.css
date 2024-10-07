@@ -208,44 +208,25 @@ body {
   text-decoration: underline;
 }
 
-/* Style cho nút menu (ba chấm) */
-
-/* Style cho menu nội dung */
-.menu-content {
-  display: none; /* Ẩn menu nội dung */
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  z-index: 10; /* Đảm bảo menu hiện lên trên các phần tử khác */
-}
-
-/* Style cho nút trong menu nội dung */
-.menu-content button {
-  padding: 8px 16px;
+.delete-btn {
+  background-color: transparent;
   border: none;
-  background: none;
+  color: #6c757d;
+  font-size: 1.2em;
   cursor: pointer;
-  display: block;
-  width: auto; /* Đặt chiều rộng tự động */
-  text-align: left;
-  color: #4267b2; /* Màu sắc giống với thiết kế của bạn */
+  transition: color 0.3s ease;
+  padding: 5px;
 }
 
-/* Thay đổi màu nền khi hover trên nút */
-.menu-content button:hover {
-  background-color: #f5f5f5;
+.delete-btn:hover {
+  color: #d9363e;
 }
 
-/* Thêm hiệu ứng cho nút xóa tài khoản */
-
-/* Style cho nút xóa tài khoản */
-.user-item .menu-btn {
-  margin-left: auto; /* Đưa nút sang bên phải */
+.delete-btn i {
+  pointer-events: none; /* Ngăn chặn sự kiện click trực tiếp lên icon */
 }
 
-/* Hiệu ứng hover cho danh sách người dùng */
-.user-item:hover {
-  background-color: #f0f0f0; /* Nền sáng hơn khi hover */
+/* Thêm khoảng cách cho nút xóa */
+.user-item .delete-btn {
+  margin-left: 550px;
 }
