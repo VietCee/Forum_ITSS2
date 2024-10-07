@@ -83,7 +83,15 @@ class Post
 
     public function deletePost($id)
     {
-        $stmt = $this->conn->prepare("DELETE FROM post WHERE id = ?");
+        
+        $deleteLikesQuery = "DELETE FROM post_likes WHERE post_id = ?";
+        $stmt = $this->conn->prepare($deleteLikesQuery);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        
+        
+        $deletePostQuery = "DELETE FROM post WHERE id = ?";
+        $stmt = $this->conn->prepare($deletePostQuery);
         $stmt->bind_param("i", $id);
         $stmt->execute();
     }

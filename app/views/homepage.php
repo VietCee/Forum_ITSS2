@@ -19,7 +19,7 @@ if (isset($_SESSION['successMessage'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage Form</title>
-    <link rel="stylesheet" href="/Forum/public/css/homePage.css?v=1.0">
+    <link rel="stylesheet" href="/Forum/public/css/homePage.css?v=1.1">
     <link rel="stylesheet" href="/Forum/public/css/post.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -100,7 +100,6 @@ if (isset($_SESSION['successMessage'])) {
                                     <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 500px; height: auto;">
                                 </div>
                             <?php endif; ?>
-                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>">Xem chi tiết</a>
                         </div>
 
                         <div class="post-actions">
@@ -112,7 +111,9 @@ if (isset($_SESSION['successMessage'])) {
                                     <i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)
                                 <?php endif; ?>
                             </button>
-                            <button><i class="fas fa-comment"></i> Comment</button>
+                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>" class="btn">
+                                <i class="fas fa-comment"></i> Comment
+                            </a>
                             <button class="save-button" data-post-id="<?= $post['id'] ?>">
                                 <?php if ($postModel->hasSaved($post['id'], $_SESSION['user']['user_id'])): ?>
                                     <i class="fas fa-bookmark"></i> Unsave
@@ -145,7 +146,6 @@ if (isset($_SESSION['successMessage'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
-
 
 
 </html>

@@ -1,69 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết bài viết</title>
-    <link rel="stylesheet" href="/Forum/public/css/postDetail.css">
-
+    <title>投稿の詳細</title>
+    <link rel="stylesheet" href="/Forum/public/css/postDetail.css?v=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 
 <body>
-
     <div class="container">
+        <div class="header-container">
+            <a href="index.php?paction=homePage" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
+            <h1>POST DETAIL</h1>
+        </div>
+        <div class="post-header">
+            <!-- Profile Image -->
+            <div class="profile-pic-container">
+                <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic">
+            </div>
+
+            <!-- User Info (Usernames and Date Created) -->
+            <div class="post-info">
+                <h3><?= htmlspecialchars($post['usernames']) ?></h3>
+                <p><?= $post['date_created'] ?></p>
+            </div>
+        </div>
 
         <div class="post-detail">
-            <a href="index.php?paction=homePage">Quay lại trang chủ</a>
-            <p>Đăng bởi: <?= htmlspecialchars($post['usernames']) ?></p>
-            <p>Ngày đăng: <?= $post['date_created'] ?></p>
             <h2><?= htmlspecialchars($post['content']) ?></h2>
-            <p style="color: #1E90FF;"><strong>#</strong><?= htmlspecialchars($post['tag']) ?></p>
+            <p class="tag"><strong>#</strong><?= htmlspecialchars($post['tag']) ?></p>
             <?php if (!empty($post['image'])): ?>
-                <img src="../public/uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 300px; height: auto;">
+                <div style="display: flex;  justify-content: center;">
+                    <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="投稿画像" class="post-image">
+                </div>
             <?php endif; ?>
         </div>
 
         <div class="comments-section">
-            <h3>Bình luận</h3>
+            <h3>コメント</h3>
             <?php if (!empty($comments)): ?>
                 <?php foreach ($comments as $comment): ?>
-                    <div class="comment" id="comment-<?= $comment['id'] ?>">
-                        <p><strong><?= htmlspecialchars($comment['usernames']) ?>:</strong>
-                            <span id="comment-content-<?= $comment['id'] ?>"><?= htmlspecialchars($comment['content']) ?></span>
-                        </p>
-                        <p><?= $comment['date_created'] ?></p>
-
+                    <div class="comment">
+                        <div class="comment-header">
+                            <strong>コメント者: <?= htmlspecialchars($comment['usernames']) ?></strong>
+                            <span class="comment-date"><?= $comment['date_created'] ?></span>
+                        </div>
+                        <p class="comment-content">内容: <?= htmlspecialchars($comment['content']) ?></p>
                         <?php if ($_SESSION['user']['user_id'] == $comment['user_id']): ?>
-                            <a href="javascript:void(0);" onclick="editComment(<?= $comment['id'] ?>)">Sửa</a>
-                            <a href="index.php?paction=deleteComment&comment_id=<?= $comment['id'] ?>&post_id=<?= $post['id'] ?>"
-                                onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?')">Xóa</a>
-                        <?php endif; ?>
-
-                        <!-- Form sửa -->
-                        <form id="edit-form-<?= $comment['id'] ?>" class="edit-form" style="display:none;" method="POST" onsubmit="return saveComment(<?= $comment['id'] ?>, <?= $post['id'] ?>)">
-                            <textarea id="edit-content-<?= $comment['id'] ?>"><?= htmlspecialchars($comment['content']) ?></textarea>
-                            <div class="button-group">
-                                <button type="submit">Update</button>
-                                <button type="button" onclick="cancelEdit(<?= $comment['id'] ?>)">Cancel</button>
+                            <div class="comment-actions">
+                                <a href="index.php?paction=editComment&id=<?= $comment['id'] ?>" class="edit-comment">編集</a>
+                                <a href="index.php?paction=deleteComment&id=<?= $comment['id'] ?>" class="delete-comment" onclick="return confirm('このコメントを削除してもよろしいですか？')">削除</a>
                             </div>
-                        </form>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>Chưa có bình luận nào.</p>
+                <p class="no-comments">コメントがまだありません。</p>
             <?php endif; ?>
 
-            <form action="index.php?paction=addComment" method="POST">
-                <textarea name="content" placeholder="Thêm bình luận" required></textarea>
+            <form action="index.php?paction=addComment" method="POST" class="comment-form">
+                <textarea name="content" placeholder="コメントを追加" required></textarea>
                 <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-                <button type="submit">Bình luận</button>
+                <button type="submit" class="comment-button">コメント</button>
             </form>
         </div>
 
     </div>
 </body>
-<script src="/Forum/public/js/comment.js"></script>
 
 </html>

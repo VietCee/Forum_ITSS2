@@ -1,79 +1,133 @@
-
-body, html {
+/* Reset CSS mặc định của trình duyệt */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body,
+  html {
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f4f4f4;
-}
-
-form {
+  }
+  
+  form {
     width: 100%;
     max-width: 600px;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    text-align: center;
-}
-
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .back-arrow {
+    position: absolute;
+    left: 0;
     font-size: 24px;
-}
-
-textarea, input[type="text"], input[type="file"] {
-    width: 100%;
+    color: #333;
+    text-decoration: none;
     padding: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .back-arrow:hover {
+    color: #007bff;
+  }
+  
+  h2 {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #333;
+  }
+  
+  textarea,
+  input[type="text"],
+  input[type="file"] {
+    width: 100%;
+    padding: 14px;
     margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
     font-size: 16px;
-    box-sizing: border-box;
-}
-
-img {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  textarea:focus,
+  input[type="text"]:focus,
+  input[type="file"]:focus {
+    border-color: #74ebd5;
+    box-shadow: 0 0 8px rgba(116, 235, 213, 0.3);
+  }
+  
+  img {
     display: block;
     margin: 0 auto 20px auto;
     max-width: 100%;
     height: auto;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid #ddd;
-}
-
-button {
-    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
     width: 100%;
-    padding: 10px;
-    background-color: #28a745;
+    padding: 15px;
+    background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
     color: white;
-    font-size: 16px;
+    font-size: 18px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-@media (max-width: 600px) {
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: 600;
+  }
+  
+  button:hover {
+    background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(33, 147, 176, 0.2);
+  }
+  
+  @media (max-width: 600px) {
     form {
-        padding: 15px;
+      padding: 30px;
     }
-
+  
     h2 {
-        font-size: 20px;
+      font-size: 24px;
     }
-
+  
+    textarea,
+    input[type="text"],
+    input[type="file"],
     button {
-        font-size: 14px;
+      font-size: 16px;
     }
-}
+  }

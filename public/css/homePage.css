@@ -139,7 +139,6 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     margin-bottom: 20px; /* Thêm khoảng cách giữa các bài viết */
-    margin-top: 20px;
   }
   
   .post-header {
@@ -180,41 +179,6 @@
     margin-top: 10px;
   }
   
-  .menu-options {
-    position: relative;
-  }
-  
-  .menu-btn {
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  .menu-content {
-    display: none; /* Ẩn menu mặc định */
-    position: absolute;
-    top: 25px;
-    right: 0;
-    background-color: white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    z-index: 1;
-  }
-  
-  .menu-content a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: #333;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .menu-content a:hover {
-    background-color: #f0f0f0;
-  }
-  
   .post-actions {
     display: flex;
     justify-content: space-between;
@@ -224,6 +188,14 @@
   }
   
   .post-actions button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #4267b2;
+    font-size: 14px;
+  }
+  
+  .post-actions a {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -247,7 +219,7 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
 
-.sidebar ul li a {
+  .sidebar ul li a {
     text-decoration: none;
     color: inherit;
 }
