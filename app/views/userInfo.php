@@ -104,9 +104,9 @@ if (isset($_SESSION['successMessage'])) {
                                 <div class="menu-options">
                                     <button class="menu-btn">⋮</button>
                                     <div class="menu-content">
-                                        <a href="index.php?paction=editPost&id=<?= $post['id'] ?>&returnTo=userInfo">Edit</a>
+                                        <a href="index.php?paction=editPost&id=<?= $post['id'] ?>&returnTo=userInfo">編集</a>
                                         <a href="index.php?paction=deletePostInfo&id=<?= $post['id'] ?>"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">Delete</a>
+                                            onclick="return confirm('この投稿を削除してもよろしいですか?')">削除</a>
                                     </div>
                                 </div>
                             <?php endif; ?>
