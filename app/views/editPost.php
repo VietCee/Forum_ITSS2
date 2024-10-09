@@ -27,7 +27,7 @@
             <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Current Image" style="width: 300px; height: auto;">
         <?php endif; ?>
         <input type="file" name="image" accept="image/*"><br>
-
+        <input type="hidden" name="returnTo" value="<?= isset($_GET['returnTo']) ? $_GET['returnTo'] : 'homePage' ?>">
         <button type="submit">Update Post</button>
     </form>
 </body>

@@ -14,7 +14,7 @@
     <div class="container">
         <div class="header-container">
             <a href="index.php?paction=homePage" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
-            <h1>POST DETAIL</h1>
+            <h1>詳細な投稿</h1>
         </div>
         <div class="post-header">
             <!-- Profile Image -->

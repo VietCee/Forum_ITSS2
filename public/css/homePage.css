@@ -118,7 +118,7 @@
   }
   
   .status-box input {
-    margin-top: 10px;
+    margin-top: 25px;
   }
   
   .status-box button {
@@ -224,3 +224,7 @@
     color: inherit;
 }
 
+
+.menu-content {
+  min-width: 60px; /* Tăng độ rộng của menu */
+}

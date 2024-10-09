@@ -90,25 +90,38 @@ class User
         return $users;
     }
 
-
     public function deleteUserById($userId)
     {
+        $postModel = new Post();
+    
+        // Xóa tất cả bình luận và bài viết của người dùng thông qua Post model
+        $postModel->deleteCommentsByUserId($userId);
+        $postModel->deletePostsByUserId($userId);
+    
+        // Xóa tất cả likes của người dùng
         $deleteLikesQuery = "DELETE FROM post_likes WHERE user_id = ?";
         $stmt = $this->conn->prepare($deleteLikesQuery);
         $stmt->bind_param("i", $userId);
-
         if (!$stmt->execute()) {
             die('Lỗi khi thực thi câu truy vấn xóa likes: ' . $stmt->error);
         }
-
+    
+        // Xóa tất cả saved posts của người dùng
+        $deleteSavedPostsQuery = "DELETE FROM saved_posts WHERE user_id = ?";
+        $stmt = $this->conn->prepare($deleteSavedPostsQuery);
+        $stmt->bind_param("i", $userId);
+        if (!$stmt->execute()) {
+            die('Lỗi khi thực thi câu truy vấn xóa saved posts: ' . $stmt->error);
+        }
+    
+        // Xóa người dùng
         $deleteUserQuery = "DELETE FROM user WHERE user_id = ?";
         $stmt = $this->conn->prepare($deleteUserQuery);
         $stmt->bind_param("i", $userId);
-
         if (!$stmt->execute()) {
             die('Lỗi khi thực thi câu truy vấn xóa người dùng: ' . $stmt->error);
         }
-
+    
         if ($stmt->affected_rows > 0) {
             return true;
         } else {

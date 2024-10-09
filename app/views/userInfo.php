@@ -34,13 +34,13 @@ if (isset($_SESSION['successMessage'])) {
         </div>
         <div class="navbar-right">
             <div class="dropdown">
-        
+
                 <img src="uploads/<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
 
 
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
-                    <li><a class="dropdown-item" href="#">My Profile</a></li>
-                    <li><a class="dropdown-item" href="index.php?login">Logout</a></li>
+                    <li><a class="dropdown-item" href="#">マイプロフィール</a></li>
+                    <li><a class="dropdown-item" href="index.php?login">ログアウト</a></li>
                 </ul>
             </div>
         </div>
@@ -50,10 +50,12 @@ if (isset($_SESSION['successMessage'])) {
     <div class="container">
         <aside class="sidebar">
             <ul>
-                <li><a href="index.php?paction=homePage"><i class="fas fa-home"></i> Home</a></li>
-                <li><i class="fas fa-bookmark"></i> Saved</li>
-                <li><i class="fas fa-user"></i> Users</li>
-                <li><i class="fas fa-magnifying-glass"></i> Search</li>
+                <li><a href="index.php?paction=homePage"><i class="fas fa-home"></i> ホーム</a></li>
+                <li><i class="fas fa-bookmark"></i> 保存されました</li>
+                <?php if ($_SESSION['user']['admin'] == 1): ?>
+                    <li><a href="index.php?paction=manageAccounts"><i class="fas fa-user-shield"></i> ユーザーの管理</a></li>
+                <?php endif; ?>
+                <li><i class="fas fa-magnifying-glass"></i> 検索</li>
             </ul>
         </aside>
 
@@ -72,9 +74,9 @@ if (isset($_SESSION['successMessage'])) {
                     </div>
                     <div class="profile-info">
                         <h1 style="color: #000000;"><?= $user['usernames'] ?></h1>
-                        <p><?= $postCount ?> posts</p>
+                        <p><?= $postCount ?> 投稿</p>
                     </div>
-                    <button class="edit-profile-btn" id="ep-Btn">Edit profile</button>
+                    <button class="edit-profile-btn" id="ep-Btn">プロフィールの編集</button>
                 </div>
             </form>
 
@@ -84,7 +86,7 @@ if (isset($_SESSION['successMessage'])) {
                     <div class="post">
                         <div class="post-header">
 
-                            <!-- <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic"> -->
+                           
                             <?php if (!empty($user['profile_picture'])): ?>
                                 <img src="uploads/<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
                             <?php else: ?>
@@ -102,8 +104,8 @@ if (isset($_SESSION['successMessage'])) {
                                 <div class="menu-options">
                                     <button class="menu-btn">⋮</button>
                                     <div class="menu-content">
-                                        <a href="index.php?paction=editPost&id=<?= $post['id'] ?>">Edit</a>
-                                        <a href="index.php?paction=deletePost&id=<?= $post['id'] ?>"
+                                        <a href="index.php?paction=editPost&id=<?= $post['id'] ?>&returnTo=userInfo">Edit</a>
+                                        <a href="index.php?paction=deletePostInfo&id=<?= $post['id'] ?>"
                                             onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">Delete</a>
                                     </div>
                                 </div>
@@ -119,32 +121,34 @@ if (isset($_SESSION['successMessage'])) {
                                     <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image" style="width: 500px; height: auto;">
                                 </div>
                             <?php endif; ?>
-                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>">Xem chi tiết</a>
+
                         </div>
 
                         <div class="post-actions">
-                            <button><i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)</button>
-                            <button><i class="fas fa-comment"></i> Comment</button>
-                            <button><i class="fas fa-share"></i> Share</button>
+                            <button><i class="fas fa-thumbs-up"></i> 好き (<?= $post['like_count'] ?>)</button>
+                            <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>" class="btn">
+                                <i class="fas fa-comment"></i> コメント
+                            </a>
+                            <button><i class="fas fa-bookmark"></i> 保存</button>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>Chưa có bài viết nào.</p>
+                <p>まだ投稿はありません。</p>
             <?php endif; ?>
         </section>
 
         <!-- Right Sidebar -->
         <aside class="right-sidebar">
-            <h4>Sponsored</h4>
+            <h4>スポンサー</h4>
             <div class="ad">
-                <p>Ad content here...</p>
+                <p>ここに広告コンテンツがあります...</p>
             </div>
-            <h4>Trending</h4>
+            <h4>トレンド</h4>
             <div class="contact-list">
-                <p>#cake</p>
-                <p>#spicy</p>
-                <p>#stupid</p>
+                <p>#ケーキ</p>
+                <p>#辛い</p>
+                <p>#バカ</p>
             </div>
         </aside>
     </div>
@@ -154,7 +158,7 @@ if (isset($_SESSION['successMessage'])) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <h5 class="modal-title" id="editProfileModalLabel">プロフィールの編集</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -168,7 +172,7 @@ if (isset($_SESSION['successMessage'])) {
 
                     <form action="index.php?paction=updateProfile&id=<?php echo $_SESSION['user']['user_id']; ?>" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
+                            <label for="username" class="form-label">ユーザー名</label>
                             <input type="text" class="form-control" id="username" name="username" placeholder="ABC"
                                 value="<?php echo $_SESSION['user']['input_username'] ?? $_SESSION['user']['usernames']; ?>">
                         </div>
@@ -178,10 +182,10 @@ if (isset($_SESSION['successMessage'])) {
                                 value="<?php echo $_SESSION['user']['input_email'] ?? $_SESSION['user']['email']; ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="profilePic" class="form-label">Profile Picture</label>
+                            <label for="profilePic" class="form-label">ロフィール写真</label>
                             <input type="file" class="form-control" id="profilePic" name="profilePic">
                         </div>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">変更を保存する</button>
                     </form>
                 </div>
             </div>

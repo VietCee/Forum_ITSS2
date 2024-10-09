@@ -11,6 +11,7 @@ if (isset($_SESSION['successMessage'])) {
     unset($_SESSION['successMessage']);
 }
 
+
 // Kiểm tra và hiển thị thông báo lỗi
 if (isset($_SESSION['error_message'])) {
     echo '<script>
@@ -18,6 +19,11 @@ if (isset($_SESSION['error_message'])) {
           </script>';
     unset($_SESSION['error_message']);
 }
+
+$userAvatar = !empty($_SESSION['user']['profile_picture']) ? "/Forum/public/uploads/" . $_SESSION['user']['profile_picture'] : "/Forum/public/img/default-avatar.jpg";
+
+
+
 ?>
 
 
@@ -34,6 +40,24 @@ if (isset($_SESSION['error_message'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/Forum/public/js/homePage.js"></script>
+    <style>
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .file-name {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -44,10 +68,11 @@ if (isset($_SESSION['error_message'])) {
         </div>
         <div class="navbar-right">
             <div class="dropdown">
-                <img src="../public/img/register.jpg" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
+
+                <img src="<?= htmlspecialchars($userAvatar) ?>" alt="User Avatar" class="user-avatar dropdown-toggle" id="userOptionsButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userOptionsButton">
-                    <li><a class="dropdown-item" href="index.php?paction=userInfo&id=<?= $_SESSION['user']['user_id'] ?>">My Profile</a></li>
-                    <li><a class="dropdown-item" href="index.php?login">Logout</a></li>
+                    <li><a class="dropdown-item" href="index.php?paction=userInfo&id=<?= $_SESSION['user']['user_id'] ?>">マイプロフィール</a></li>
+                    <li><a class="dropdown-item" href="index.php?login">ログアウト</a></li>
                 </ul>
             </div>
         </div>
@@ -57,12 +82,12 @@ if (isset($_SESSION['error_message'])) {
     <div class="container">
         <aside class="sidebar">
             <ul>
-                <li><a href="index.php?paction=homePage"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="index.php?paction=savedPosts"><i class="fas fa-bookmark"></i> Saved</a></li>
+                <li><a href="index.php?paction=homePage"><i class="fas fa-home"></i> ホーム</a></li>
+                <li><a href="index.php?paction=savedPosts"><i class="fas fa-bookmark"></i> 保存されました</a></li>
                 <?php if ($_SESSION['user']['admin'] == 1): ?>
-                    <li><a href="index.php?paction=manageAccounts"><i class="fas fa-user-shield"></i> Manage Users</a></li>
+                    <li><a href="index.php?paction=manageAccounts"><i class="fas fa-user-shield"></i> ユーザーの管理</a></li>
                 <?php endif; ?>
-                <li><i class="fas fa-magnifying-glass"></i> Search</a></li>
+                <li><a href="index.php?paction=searchForm"><i class="fas fa-magnifying-glass"></i> 検索</a></li>
             </ul>
         </aside>
 
@@ -70,9 +95,11 @@ if (isset($_SESSION['error_message'])) {
             <form action="index.php?paction=addPost" method="POST" enctype="multipart/form-data">
                 <div class="status-box">
                     <textarea name="content" placeholder="何を考えているのですか？" required></textarea>
-                    <input type="file" name="image" accept="image/*">
-                    <input type="text" name="tag" placeholder="タグ">
-                    <button type="submit">Post</button>
+                    <label for="image" class="file-label">写真を選択</label>
+                    <input type="file" id="image" name="image" accept="image/*" class="file-input" onchange="updateFileName()">
+                    <span class="file-name">ファイルがまだ選択されていません</span>
+                    <input type="text" name="tag" placeholder="タグ" style="margin-left: 15px;">
+                    <button type="submit">ポスト</button>
                 </div>
             </form>
 
@@ -84,10 +111,6 @@ if (isset($_SESSION['error_message'])) {
 
                             <img src="../public/img/register.jpg" alt="Profile Picture" class="profile-pic">
 
-                            <!-- <img src="uploads/<?= htmlspecialchars($post['profile_picture']) ?>" alt="Profile Picture" class="profile-pic"> -->
-
-
-
                             <div class="post-info">
                                 <h3><?= $post['usernames'] ?></h3>
                                 <p><?= $post['date_created'] ?></p>
@@ -97,9 +120,9 @@ if (isset($_SESSION['error_message'])) {
                                 <div class="menu-options">
                                     <button class="menu-btn">⋮</button>
                                     <div class="menu-content">
-                                        <a href="index.php?paction=editPost&id=<?= $post['id'] ?>">Edit</a>
+                                        <a href="index.php?paction=editPost&id=<?= $post['id'] ?>">編集</a>
                                         <a href="index.php?paction=deletePost&id=<?= $post['id'] ?>"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">Delete</a>
+                                            onclick="return confirm('この投稿を削除してもよろしいですか?')">削除</a>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -120,19 +143,19 @@ if (isset($_SESSION['error_message'])) {
                             <input type="hidden" class="post-id" value="<?= $post['id'] ?>">
                             <button class="like-button" data-post-id="<?= $post['id'] ?>">
                                 <?php if ($postModel->hasLiked($post['id'], $_SESSION['user']['user_id'])): ?>
-                                    <i class="fas fa-thumbs-up"></i> Unlike (<?= $post['like_count'] ?>)
+                                    <i class="fas fa-thumbs-up"></i> 好かん (<?= $post['like_count'] ?>)
                                 <?php else: ?>
-                                    <i class="fas fa-thumbs-up"></i> Like (<?= $post['like_count'] ?>)
+                                    <i class="fas fa-thumbs-up"></i> 好き (<?= $post['like_count'] ?>)
                                 <?php endif; ?>
                             </button>
                             <a href="index.php?paction=postDetail&id=<?= $post['id'] ?>" class="btn">
-                                <i class="fas fa-comment"></i> Comment
+                                <i class="fas fa-comment"></i> コメント
                             </a>
                             <button class="save-button" data-post-id="<?= $post['id'] ?>">
                                 <?php if ($postModel->hasSaved($post['id'], $_SESSION['user']['user_id'])): ?>
-                                    <i class="fas fa-bookmark"></i> Unsave
+                                    <i class="fas fa-bookmark"></i> 保存しない
                                 <?php else: ?>
-                                    <i class="fas fa-bookmark"></i> Save
+                                    <i class="fas fa-bookmark"></i> 保存
                                 <?php endif; ?>
                             </button>
                         </div>
@@ -145,21 +168,31 @@ if (isset($_SESSION['error_message'])) {
 
         <!-- Right Sidebar -->
         <aside class="right-sidebar">
-            <h4>Sponsored</h4>
+            <h4>スポンサー</h4>
             <div class="ad">
-                <p>Ad content here...</p>
+                <p></p>ここに広告コンテンツがあります...</p>
             </div>
-            <h4>Trending</h4>
+            <h4>トレンド</h4>
             <div class="contact-list">
-                <p>#cake</p>
-                <p>#spicy</p>
-                <p>#stupid</p>
+                <p>#ケーキ</p>
+                <p>#辛い</p>
+                <p>#バカ</p>
             </div>
         </aside>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    <script>
+        function updateFileName() {
+            const input = document.getElementById('image');
+            const fileNameDisplay = document.querySelector('.file-name');
+            if (input.files.length > 0) {
+                fileNameDisplay.textContent = input.files[0].name;
+            } else {
+                fileNameDisplay.textContent = "Chưa chọn tệp nào";
+            }
+        }
+    </script>
 
 </body>
 

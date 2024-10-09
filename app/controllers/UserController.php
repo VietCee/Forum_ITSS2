@@ -117,8 +117,14 @@ public function deleteUser()
 {
     if (isset($_POST['user_id'])) {
         $userModel = new User();
+        
+        // Xóa tất cả bài viết của người dùng trước khi xóa người dùng
+        $postModel = new Post();
+        $postModel->deletePostsByUserId($_POST['user_id']);
+        
+        // Sau đó, xóa người dùng
         $userModel->deleteUserById($_POST['user_id']);
-        header('Location: index.php?paction=manageAccounts'); // Chuyển hướng lại trang quản lý
+        header('Location: index.php?paction=manageAccounts');
         exit();
     }
 }

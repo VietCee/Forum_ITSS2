@@ -21,11 +21,10 @@ $form_data = $_SESSION['form_data'] ?? [];
 <body>
     <div class="content-wrapper">
         <div class="img-container">
-            <!-- Chèn hình ảnh bên trái -->
-            <img src="./img/login.jpg" alt="Login Image">
+            <img src="./img/logo.png" alt="Login Image">
         </div>
         <div class="login-container">
-            <h3 class="text-center mb-4">Welcome Back!</h3>
+            <h3 class="text-center mb-4">おかえり！</h3>
 
             <?php if (!empty($error)): ?>
                 <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
@@ -33,26 +32,26 @@ $form_data = $_SESSION['form_data'] ?? [];
 
             <form action="index.php?paction=handleLogin" method="post">
                 <div class="mb-3">
-                    <input type="email" class="form-control" name="email" placeholder="Enter Email Address..." value="<?php echo htmlspecialchars($form_data['email'] ?? ''); ?>">
+                    <input type="email" class="form-control" name="email" placeholder="メールアドレスを入力してください..." value="<?php echo htmlspecialchars($form_data['email'] ?? ''); ?>">
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" name="passwords" placeholder="Password">
+                    <input type="password" class="form-control" name="passwords" placeholder="パスワード">
                 </div>
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                    <label class="form-check-label" for="rememberMe">覚えて</label>
                 </div>
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn login-btn">Login</button>
+                    <button type="submit" class="btn login-btn">ログイン</button>
                 </div>
                 <hr>
                 <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-danger">Login with Google</button>
-                    <button type="button" class="btn btn-primary">Login with Facebook</button>
+                    <button type="button" class="btn btn-danger">Googleでログイン</button>
+                    <button type="button" class="btn btn-primary">Facebookでログイン</button>
                 </div>
                 <div class="text-center mt-3">
-                    <a href="#" class="text-decoration-none">Forgot Password?</a><br>
-                    <a href="index.php?paction=register" class="text-decoration-none">Create an Account!</a>
+                    <a href="#" class="text-decoration-none">パスワードをお忘れですか？</a><br>
+                    <a href="index.php?paction=register" class="text-decoration-none">アカウントを作成する！</a>
                 </div>
             </form>
         </div>

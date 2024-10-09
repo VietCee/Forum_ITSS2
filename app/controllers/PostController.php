@@ -25,7 +25,7 @@ class PostController
             $postModel = new Post();
             $postModel->createPost($user_id, $content, $image, $tag);
 
-            $_SESSION['successMessage'] = "Bài viết đã được đăng tải thành công!";
+            $_SESSION['successMessage'] = "記事が無事に投稿されました！";
 
             header("Location: index.php?paction=homePage");
             exit();
@@ -45,17 +45,17 @@ class PostController
         if (isset($_GET['id'])) {
             $postModel = new Post();
             $post = $postModel->getPostById($_GET['id']);
-    
+
             if ($post['user_id'] == $_SESSION['user']['user_id']) {
                 require_once '../app/views/editPost.php';
             } else {
-                $_SESSION['error_message'] = 'Bạn không có quyền chỉnh sửa bài viết này.';
+                $_SESSION['error_message'] = 'この記事を編集する権限がありません。';
                 header("Location: index.php?paction=homePage");
                 exit();
             }
         }
     }
-    
+
 
 
     public function updatePost()
@@ -67,7 +67,13 @@ class PostController
 
             $postModel->updatePost($_POST['id'], $content, $tag);
 
-            header("Location: index.php?paction=homePage");
+            $returnTo = isset($_POST['returnTo']) ? $_POST['returnTo'] : 'homePage';
+
+            if ($returnTo === 'userInfo') {
+                header("Location: index.php?paction=userInfo&id=" . $_SESSION['user']['user_id']);
+            } else {
+                header("Location: index.php?paction=homePage");
+            }
             exit();
         } else {
             echo "Không thể cập nhật bài viết.";
@@ -79,10 +85,10 @@ class PostController
         if (isset($_GET['id'])) {
             $postModel = new Post();
             $post = $postModel->getPostById($_GET['id']);
-    
+
             $isAdmin = $_SESSION['user']['admin'] == 1;
-    
-            if ($isAdmin || $post['user_id'] == $_SESSION['user']['user_id']) { 
+
+            if ($isAdmin || $post['user_id'] == $_SESSION['user']['user_id']) {
                 $postModel->deletePost($_GET['id']);
                 header("Location: index.php?paction=homePage");
                 exit();
@@ -170,7 +176,25 @@ class PostController
 
         require_once '../app/views/savedPosts.php'; // Điều chỉnh giống với postDetail
     }
-    
-   
 
+
+    public function search()
+    {
+        require_once '../app/views/search.php';
+    }
+
+
+    // Xử lý tìm kiếm bài viết theo tag
+
+
+    public function searchPost()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $tag = $_POST['tag'];
+            $postModel = new Post();
+            $posts = $postModel->searchPostsByTag($tag);
+
+            require_once '../app/views/search.php';
+        }
+    }
 }

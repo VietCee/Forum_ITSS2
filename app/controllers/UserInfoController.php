@@ -76,22 +76,21 @@ public function updatePost()
     }
 }
 
-public function deletePost()
+public function deletePostInfo()
 {
     if (isset($_GET['id'])) {
         $postModel = new Post();
         $post = $postModel->getPostById($_GET['id']);
 
-        if ($post['user_id'] == $_SESSION['user']['user_id']) { // kiểm tra xem bài viết có thuộc user hiện tại đăng không
+        if ($post['user_id'] == $_SESSION['user']['user_id']) {
             $postModel->deletePost($_GET['id']);
-            header("Location: index.php?paction=userInfo");
+            header("Location: index.php?paction=userInfo&id=" . $_SESSION['user']['user_id']);
             exit();
         } else {
             echo 'Bạn không có quyền xóa bài viết này.';
         }
     }
 }
-
 
 public function postDetail()
 {

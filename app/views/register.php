@@ -20,10 +20,10 @@ $form_data = $_SESSION['form_data'] ?? [];
 <body>
     <div class="content-wrapper">
         <div class="img-container">
-            <img src="./img/register.jpg" alt="Register Image">
+            <img src="./img/logo.png" alt="Register Image">
         </div>
         <div class="login-container">
-            <h3 class="text-center mb-4">Create an Account!</h3>
+            <h3 class="text-center mb-4">アカウントを作成する！</h3>
 
             <?php if (!empty($error)): ?>
                 <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
@@ -31,23 +31,23 @@ $form_data = $_SESSION['form_data'] ?? [];
 
             <form action="index.php?paction=handleRegister" method="post">
                 <div class="mb-3">
-                    <input type="email" class="form-control" name="email" placeholder="Enter Email Address..." value="<?php echo htmlspecialchars($form_data['email'] ?? ''); ?>">
+                    <input type="email" class="form-control" name="email" placeholder="メールアドレスを入力してください..." value="<?php echo htmlspecialchars($form_data['email'] ?? ''); ?>">
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="usernames" placeholder="Enter Username..." value="<?php echo htmlspecialchars($form_data['usernames'] ?? ''); ?>">
+                    <input type="text" class="form-control" name="usernames" placeholder="ユーザー名を入力してください..." value="<?php echo htmlspecialchars($form_data['usernames'] ?? ''); ?>">
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" name="passwords" placeholder="Password">
+                    <input type="password" class="form-control" name="passwords" placeholder="パスワード">
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password">
+                    <input type="password" class="form-control" name="confirm_password" placeholder="パスワードを認証する">
                 </div>
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn login-btn">Register</button>
+                    <button type="submit" class="btn login-btn">使用域</button>
                 </div>
                 <hr>
                 <div class="text-center mt-3">
-                    <a href="index.php?paction=login" class="text-decoration-none">Already have an account? Login!</a>
+                    <a href="index.php?paction=login" class="text-decoration-none">すでにアカウントをお持ちですか? ログイン！</a>
                 </div>
             </form>
         </div>

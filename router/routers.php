@@ -75,7 +75,15 @@ switch ($page) {
     case 'deleteUser':
         $controller->deleteUser();
         break;
-
+    case 'searchForm':
+        $postController->search();
+        break;
+    case 'searchPost':
+        $postController->searchPost();
+        break;
+    case 'deletePostInfo':
+        $userInfoController->deletePostInfo();
+        break;
     default:
         $controller->login();
         break;

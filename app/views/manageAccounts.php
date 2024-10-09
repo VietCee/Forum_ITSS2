@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Accounts</title>
+    <title>アカウントの管理</title>
     <link rel="stylesheet" href="/Forum/public/css/manageUser.css?v=1.0">
 </head>
 <body>
     
 <div class="container">
-    <a href="index.php?paction=homePage">Back to HomePage</a>
-    <h2>Manage Accounts</h2>
+    <a href="index.php?paction=homePage">ホームページに戻る</a>
+    <h2>アカウントの管理</h2>
     <table>
         <thead>
             <tr>
-                <th>User ID</th>
-                <th>Username</th>
+                <th>ユーザーID</th>
+                <th>ユーザー名</th>
                 <th>Gmail</th>
-                <th>Action</th>
+                <th>アクション</th>
             </tr>
         </thead>
         <tbody>
@@ -27,9 +27,9 @@
                     <td><?php echo htmlspecialchars($user['usernames']); ?></td>
                     <td><?php echo htmlspecialchars($user['email']); ?></td>
                     <td>
-                        <form action="index.php?paction=deleteUser" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                        <form action="index.php?paction=deleteUser" method="POST" onsubmit="return confirm('このユーザーを削除してもよろしいですか？');">
                             <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>">
-                            <button type="submit">Delete</button>
+                            <button type="submit">削除</button>
                         </form>
                     </td>
                 </tr>

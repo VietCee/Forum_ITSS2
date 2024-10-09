@@ -110,4 +110,12 @@ class Comment
 
         return $comments;
     }
+
+    public function deleteCommentsByPostId($postId)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM comments WHERE post_id = ?");
+        $stmt->bind_param("i", $postId);
+        $stmt->execute();
+        $stmt->close();
+    }
 }

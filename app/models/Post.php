@@ -81,20 +81,46 @@ class Post
         return true;
     }
 
-    public function deletePost($id)
+    public function deletePost($postId)
     {
-        
-        $deleteLikesQuery = "DELETE FROM post_likes WHERE post_id = ?";
-        $stmt = $this->conn->prepare($deleteLikesQuery);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        
-        
-        $deletePostQuery = "DELETE FROM post WHERE id = ?";
-        $stmt = $this->conn->prepare($deletePostQuery);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
+        // Bắt đầu một giao dịch
+        $this->conn->begin_transaction();
+    
+        try {
+            // Xóa các bình luận liên quan đến bài viết
+            $stmt = $this->conn->prepare("DELETE FROM comments WHERE post_id = ?");
+            $stmt->bind_param("i", $postId);
+            $stmt->execute();
+            $stmt->close();
+    
+            // Xóa các bản ghi liên quan đến bài viết trong bảng saved_posts
+            $stmt = $this->conn->prepare("DELETE FROM saved_posts WHERE post_id = ?");
+            $stmt->bind_param("i", $postId);
+            $stmt->execute();
+            $stmt->close();
+    
+            // Xóa các lượt thích liên quan đến bài viết
+            $stmt = $this->conn->prepare("DELETE FROM post_likes WHERE post_id = ?");
+            $stmt->bind_param("i", $postId);
+            $stmt->execute();
+            $stmt->close();
+    
+            // Xóa bài viết
+            $stmt = $this->conn->prepare("DELETE FROM post WHERE id = ?");
+            $stmt->bind_param("i", $postId);
+            $stmt->execute();
+            $stmt->close();
+    
+            // Nếu tất cả các truy vấn đều thành công, commit giao dịch
+            $this->conn->commit();
+        } catch (mysqli_sql_exception $exception) {
+            // Nếu có lỗi xảy ra, rollback giao dịch
+            $this->conn->rollback();
+            die('Lỗi khi xóa bài viết: ' . $exception->getMessage());
+        }
     }
+
+
 
     public function hasLiked($post_id, $user_id)
     {
@@ -168,7 +194,66 @@ class Post
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function searchPostsByTag($tag)
+    {
+        $stmt = $this->conn->prepare("
+            SELECT post.*, user.usernames 
+            FROM post 
+            JOIN user ON post.user_id = user.user_id 
+            WHERE post.tag LIKE ?
+        ");
+        $tag = '%' . $tag . '%';
+        $stmt->bind_param("s", $tag);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 
+    public function deleteLikesByPostId($postId)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM post_likes WHERE post_id = ?");
+        $stmt->bind_param("i", $postId);
+        $stmt->execute();
+        $stmt->close();
+    }
 
+    private function deleteSavedPostsByPostId($postId)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM saved_posts WHERE post_id = ?");
+        $stmt->bind_param("i", $postId);
+        $stmt->execute();
+        $stmt->close();
+    }
+    public function deleteCommentsByUserId($userId)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM comments WHERE user_id = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $stmt->close();
+    }
+    public function deletePostsByUserId($userId)
+    {
 
+        $stmt = $this->conn->prepare("SELECT id FROM post WHERE user_id = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $this->deleteLikesByPostId($row['id']);
+            $this->deleteSavedPostsByPostId($row['id']);
+        }
+
+        $commentModel = new Comment();
+        $stmt = $this->conn->prepare("SELECT id FROM post WHERE user_id = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $commentModel->deleteCommentsByPostId($row['id']);
+        }
+        $stmt = $this->conn->prepare("DELETE FROM post WHERE user_id = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $stmt->close();
+    }
 }

@@ -1,37 +1,42 @@
-<?php
-// search.php
-if (isset($_POST['search_tag'])) {
-    $tag = htmlspecialchars($_POST['search_tag']);
-    // Gọi controller để xử lý tìm kiếm
-    $posts = $postController->searchPostsByTag($tag);
-} else {
-    $posts = [];
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Posts</title>
+    <title>Search Posts by Tag</title>
+    <link rel="stylesheet" href="/Forum/public/css/search.css">
 </head>
 <body>
-    <h1>Search Posts by Tag</h1>
-    <form method="POST" action="index.php?paction=search">
-        <input type="text" name="search_tag" placeholder="Enter tag" required>
-        <button type="submit">Search</button>
-    </form>
+    <div class="container">
+        <a href="index.php?paction=homePage" class="back-home">ホームページに戻る</a>
+        
+        <div class="search-form">
+            <h2>タグで投稿を検索</h2>
+            <form action="index.php?paction=searchPost" method="POST">
+                <label for="tag">タグを入力してください:</label>
+                <input type="text" name="tag" id="tag" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
 
-    <?php if (!empty($posts)): ?>
-        <h2>Search Results:</h2>
-        <ul>
-            <?php foreach ($posts as $post): ?>
-                <li><?php echo htmlspecialchars($post['content']); ?> (Tags: <?php echo htmlspecialchars($post['tags']); ?>)</li>
-            <?php endforeach; ?>
-        </ul>
-    <?php elseif ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
-        <p>No results found for the tag "<?php echo htmlspecialchars($tag); ?>".</p>
-    <?php endif; ?>
+        <div class="search-results">
+            <h2>検索結果</h2>
+            <?php if (!empty($posts)): ?>
+                <ul>
+                    <?php foreach ($posts as $post): ?>
+                        <li>
+                            <p><strong><?php echo htmlspecialchars($post['usernames']); ?></strong> on <?php echo htmlspecialchars($post['date_created']); ?></p>
+                            <?php if (!empty($post['image'])): ?>
+                                <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Post Image">
+                            <?php endif; ?>
+                            <p><?php echo htmlspecialchars($post['content']); ?></p>
+                            <small>タグ: <?php echo htmlspecialchars($post['tag']); ?></small>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>そのタグが付いた投稿は見つかりませんでした。</p>
+            <?php endif; ?>
+        </div>
+    </div>
 </body>
 </html>

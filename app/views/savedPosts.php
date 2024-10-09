@@ -13,7 +13,7 @@
 
     <div class="header-container">
             <a href="index.php?paction=homePage" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
-            <h2>Your Saved Posts</h2>
+            <h2>保存した投稿</h2>
     </div>
 
     <?php if (count($savedPosts) > 0): ?>
@@ -32,7 +32,7 @@
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <p>Bạn chưa lưu bài viết nào.</p>
+        <p style="text-align: center;">まだ投稿を保存していません。</p>
     <?php endif; ?>
 
 </body>
